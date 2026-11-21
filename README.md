@@ -7,6 +7,7 @@ Engine dan data rujukan untuk skill Gemini **perangkat-ajar-ma**: menyusun CP, T
 mesin/mesin-perangkat.js        engine (render, hitung minggu efektif, kop, unduh Word/PDF/HTML)
 data/kaldik-2026-2027.md        kalender & rincian minggu efektif (Kaldik Kanwil Kemenag Jateng 2026/2027)
 data/kbc-pembelajaran-mendalam.md  Panca Cinta, DPL, prinsip PM (SK 6077/2025, KMA 1503/2025)
+data/model-pedagogis.md         25 model praktik pedagogis berpusat murid (ringkasan 69 file PPT guru)
 data/ma/cp-ma-umum-fase-e.md    CP mapel umum Fase E (BSKAP 046/H/KR/2025)
 data/ma/cp-ma-umum-fase-f.md    CP mapel umum Fase F (BSKAP 046/H/KR/2025)
 data/ma/cp-ma-pai-arab.md       CP PAI & Bahasa Arab MA reguler (SK Dirjen Pendis 9941/2025)
@@ -18,10 +19,10 @@ uji/                            halaman uji lokal (Matematika X, Fikih X, Fisika
 ```
 
 ## Alamat engine (dipakai skill)
-- Utama (versi terkunci): `https://cdn.jsdelivr.net/gh/muflihan-ak/perangkat-ajar-madrasah@v1.0.0/mesin/mesin-perangkat.js`
+- Utama (versi terkunci): `https://cdn.jsdelivr.net/gh/muflihan-ak/perangkat-ajar-madrasah@v1.2.0/mesin/mesin-perangkat.js`
 - Cadangan (GitHub Pages): `https://muflihan-ak.github.io/perangkat-ajar-madrasah/mesin/mesin-perangkat.js`
 
-Engine memuat berkas `data/*.md` dari tag yang sama (`@v1.0.0`), dengan GitHub Pages sebagai cadangan. Bila engine atau data berubah, rilis tag baru (misalnya `v1.0.1`), ubah konstanta `VERSI` di engine, lalu perbarui alamat di SKILL.md. Tag yang sudah dirilis jangan diubah.
+Engine memuat berkas `data/*.md` dari tag yang sama (`@v1.2.0`), dengan GitHub Pages sebagai cadangan. Bila engine atau data berubah, rilis tag baru (misalnya `v1.0.1`), ubah konstanta `VERSI` di engine, lalu perbarui alamat di SKILL.md. Tag yang sudah dirilis jangan diubah.
 
 ## Format data .md
 - Mapel: `## [id|FASE] Nama Mapel`, contoh `## [matematika|E] Matematika`

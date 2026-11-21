@@ -63,9 +63,9 @@ Satuan modul ajar: **per topik/TP** (boleh beberapa TP yang satu topik, beberapa
 4. Topik Panca Cinta (KBC): tabel 5 topik, centang yang diinsersikan (1–3).
 5. Materi Integrasi KBC: uraian singkat insersi per topik yang dicentang.
 
-**II. Desain Pembelajaran**: CP (otomatis dari file CP sesuai elemen TP), lintas disiplin ilmu, TP, topik pembelajaran, praktik pedagogis (model/strategi/metode), kemitraan pembelajaran, lingkungan pembelajaran, pemanfaatan digital/media.
+**II. Desain Pembelajaran**: CP (otomatis dari file CP sesuai elemen TP), lintas disiplin ilmu, TP, topik pembelajaran, praktik pedagogis (model dari `model-pedagogis.md` yang dipilih guru dari 2–3 usulan, tidak mengulang model di `riwayat_model`; ditambah metode/strategi pendukung), kemitraan pembelajaran, lingkungan pembelajaran, pemanfaatan digital/media.
 
-**III. Pengalaman Belajar** (per pertemuan)
+**III. Pengalaman Belajar** (per pertemuan; kegiatan mengikuti sintaks model terpilih dan diberi label langkah sintaks)
 - **Awal**: salam, doa, apersepsi kontekstual, penyampaian tujuan, motivasi. Tandai prinsip (berkesadaran/bermakna/menggembirakan).
 - **Inti**: Memahami → Mengaplikasi → Merefleksi.
 - **Penutup**: umpan balik, simpulan bersama, refleksi, doa/hamdalah.
