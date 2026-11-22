@@ -19,10 +19,10 @@ uji/                            halaman uji lokal (Matematika X, Fikih X, Fisika
 ```
 
 ## Alamat engine (dipakai skill)
-- Utama (versi terkunci): `https://cdn.jsdelivr.net/gh/muflihan-ak/perangkat-ajar-madrasah@v1.2.0/mesin/mesin-perangkat.js`
+- Utama (versi terkunci): `https://cdn.jsdelivr.net/gh/muflihan-ak/perangkat-ajar-madrasah@v1.3.0/mesin/mesin-perangkat.js`
 - Cadangan (GitHub Pages): `https://muflihan-ak.github.io/perangkat-ajar-madrasah/mesin/mesin-perangkat.js`
 
-Engine memuat berkas `data/*.md` dari tag yang sama (`@v1.2.0`), dengan GitHub Pages sebagai cadangan. Bila engine atau data berubah, rilis tag baru (misalnya `v1.0.1`), ubah konstanta `VERSI` di engine, lalu perbarui alamat di SKILL.md. Tag yang sudah dirilis jangan diubah.
+Engine memuat berkas `data/*.md` dari tag yang sama (`@v1.3.0`), dengan GitHub Pages sebagai cadangan. Bila engine atau data berubah, rilis tag baru (misalnya `v1.0.1`), ubah konstanta `VERSI` di engine, lalu perbarui alamat di SKILL.md. Tag yang sudah dirilis jangan diubah.
 
 ## Format data .md
 - Mapel: `## [id|FASE] Nama Mapel`, contoh `## [matematika|E] Matematika`
@@ -40,3 +40,10 @@ Halaman uji memakai `PERANGKAT.data_base = '../data/'` sehingga data dibaca dari
 ## Catatan sumber
 - Teks Arab pada CP Bahasa Arab (SK 9941/2025) disalin ulang secara manual dari halaman PDF, karena ekstraksi teks PDF merusak ligatur Arab.
 - KMA 1503/2025 dan Kaldik Jateng berupa PDF hasil pindai; angka JP dan tanggal ditranskripsi dari gambar halaman dan diperiksa ulang.
+
+## Riwayat versi
+- **v1.3.0** — Pola Canvas terpisah: satu Canvas "Perangkat Ajar" (CP–KKTP) dan satu Canvas baru per Modul Ajar (`Modul Ajar NN – Mapel Kelas – Topik`), field `nama_dokumen` untuk judul dan nama berkas unduhan. Peringatan otomatis untuk elemen di luar CP fase, model di luar basis data, JP berbeda dari KMA 1503, dan lebih dari satu modul dalam satu Canvas. Alias field (`nomor`→`ke`, `judul`→`fokus`), rubrik sikap 4 level, level kognitif soal sumatif. LKPD di Lampiran II versi ringkas untuk dicetak.
+- **v1.2.1** — Tab per modul, pemetaan JP mapel MAPK, perbaikan daftar Arab RTL.
+- **v1.2.0** — Basis data 25 model pedagogis dan label sintaks.
+- **v1.1.x** — Paginator A4 dan unduhan PDF per lembar.
+- **v1.0.0** — Rilis awal.

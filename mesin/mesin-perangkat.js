@@ -1,12 +1,12 @@
 /*!
- * Mesin Perangkat Ajar Madrasah v1.2.0
+ * Mesin Perangkat Ajar Madrasah v1.3.0
  * CP · TP · ATP · Prota · Prosem · KKTP · Modul Ajar (Pembelajaran Mendalam Berbasis Cinta)
  * Data: window.PERANGKAT (ditulis skill Gemini). Rujukan CP/JP/Kaldik: berkas .md di folder data/.
  * Repo: github.com/muflihan-ak/perangkat-ajar-madrasah
  */
 (function () {
   'use strict';
-  var VERSI = '1.2.0';
+  var VERSI = '1.3.0';
   var REPO = 'muflihan-ak/perangkat-ajar-madrasah';
   var DATA_BASES = [
     'https://cdn.jsdelivr.net/gh/' + REPO + '@v' + VERSI + '/data/',
@@ -21,16 +21,18 @@
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function arr(x) { return Array.isArray(x) ? x : (x == null || x === '' ? [] : [x]); }
   function inl(s) { return esc(s).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*(.+?)\*/g, '<i>$1</i>'); }
+  var AR = /^[\s\-–(]*[\u0600-\u06FF]/;
+  function tutupList(list, rtl) { return '<ul' + (rtl ? ' dir="rtl"' : '') + '>' + list.join('') + '</ul>'; }
   function md(txt) {
-    var out = [], list = null;
+    var out = [], list = null, rtl = true;
     String(txt || '').split('\n').forEach(function (l) {
       var t = l.trim();
-      if (!t) { if (list) { out.push('<ul>' + list.join('') + '</ul>'); list = null; } return; }
-      if (/^- /.test(t)) { (list = list || []).push('<li dir="auto">' + inl(t.slice(2)) + '</li>'); return; }
-      if (list) { out.push('<ul>' + list.join('') + '</ul>'); list = null; }
+      if (!t) { if (list) { out.push(tutupList(list, rtl)); list = null; } return; }
+      if (/^- /.test(t)) { if (!list) { list = []; rtl = true; } rtl = rtl && AR.test(t.slice(2)); list.push('<li dir="auto">' + inl(t.slice(2)) + '</li>'); return; }
+      if (list) { out.push(tutupList(list, rtl)); list = null; }
       out.push('<p dir="auto">' + inl(t) + '</p>');
     });
-    if (list) out.push('<ul>' + list.join('') + '</ul>');
+    if (list) out.push(tutupList(list, rtl));
     return out.join('');
   }
   function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
@@ -130,9 +132,15 @@
   }
   function jpMinggu() {
     if (P.pengaturan.jp_minggu) return +P.pengaturan.jp_minggu;
-    var s = STR[I.kelas] && STR[I.kelas][I.mapel_id];
-    return s ? s.jpm : 2;
+    var K = STR[I.kelas] || {}, s = K[I.mapel_id];
+    if (s) return s.jpm;
+    // MA Program Keagamaan: JP mengikuti mapel induk (KMA 1503 tidak merinci pembagian; dibagi rata)
+    var INDUK = { 'tafsir-mapk': ['al-quran-hadis', 2], 'hadis-mapk': ['al-quran-hadis', 2], 'ilmu-kalam-mapk': ['akidah-akhlak', 2], 'akhlak-tasawuf-mapk': ['akidah-akhlak', 2], 'fikih-mapk': ['fikih', 1], 'bahasa-arab-mapk': ['bahasa-arab', 1] };
+    var ind = INDUK[I.mapel_id];
+    if (ind && K[ind[0]]) return Math.max(1, Math.round(K[ind[0]].jpm / ind[1]));
+    JP_TEBAK = true; return 2;
   }
+  var JP_TEBAK = false;
   function weeksFor(sem) {
     var ov = P.pengaturan.minggu || {};
     var akhir = I.kelas === 'XII' && sem === '2' && KAL.batas;
@@ -364,6 +372,7 @@
       '<tr><td class="lbl">Pemanfaatan Digital / Media</td><td>' + md(d.digital || '-') + '</td></tr></table>';
     h += '<h3>III. PENGALAMAN BELAJAR (LANGKAH-LANGKAH PEMBELAJARAN)</h3>';
     pert.forEach(function (p, i) {
+      if (p.ke == null && p.nomor != null) p.ke = p.nomor; if (!p.fokus && p.judul) p.fokus = p.judul;
       var tm = menit(p.jp || (jpTot / (pert.length || 1))), du = p.durasi || {}, a = du.awal || Math.round(tm * 0.12 / 5) * 5 + ' menit', z = du.penutup || Math.round(tm * 0.12 / 5) * 5 + ' menit', n = du.inti || (tm - 2 * Math.round(tm * 0.12 / 5) * 5) + ' menit';
       h += '<div class="pertemuan"><p class="pt">Pertemuan ' + (p.ke || i + 1) + ' (' + esc((p.jp || '') + ' JP') + ')' + (p.fokus ? ' — ' + esc(p.fokus) : '') + '</p>' +
         '<p class="sub">AWAL — Pembukaan (' + esc(a) + ') <span class="prinsip">[Berkesadaran, Bermakna, Menggembirakan]</span></p>' + liList(p.awal) +
@@ -384,7 +393,13 @@
     if (sikap.length) {
       h += '<table class="grid"><thead><tr><th style="width:5%">No</th><th>Nama Murid</th>' + sikap.map(function (x) { return '<th style="width:' + Math.floor(55 / sikap.length) + '%">' + esc(x.aspek) + '</th>'; }).join('') + '</tr></thead><tbody>';
       for (var r = 1; r <= 5; r++) h += '<tr><td class="c">' + r + '</td><td></td>' + sikap.map(function () { return '<td class="c kecil">1 – 2 – 3 – 4</td>'; }).join('') + '</tr>';
-      h += '</tbody></table><p class="kecil"><b>Rubrik sikap (skor 4):</b></p><ul class="kecil">' + sikap.map(function (x) { return '<li><b>' + esc(x.aspek) + ':</b> ' + inl(x.rubrik || '') + '</li>'; }).join('') + '</ul>';
+      var empat = sikap.some(function (x) { return x.skor_4 || arr(x.skor).length; });
+      if (empat) {
+        h += '</tbody></table><p class="sub kecil">Rubrik sikap:</p><table class="grid kecil"><thead><tr><th style="width:18%">Aspek</th><th>Skor 4</th><th>Skor 3</th><th>Skor 2</th><th>Skor 1</th></tr></thead><tbody>' +
+          sikap.map(function (x) { var sk = arr(x.skor).length ? arr(x.skor) : [x.skor_4, x.skor_3, x.skor_2, x.skor_1]; return '<tr><td><b>' + esc(x.aspek) + '</b></td>' + [0, 1, 2, 3].map(function (k) { return '<td dir="auto">' + inl(sk[k] || '') + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table><p class="kecil">Nilai sikap = (skor perolehan ÷ ' + (sikap.length * 4) + ') × 100</p>';
+      } else {
+        h += '</tbody></table><p class="sub kecil">Rubrik sikap (skor 4):</p><ul class="kecil">' + sikap.map(function (x) { return '<li><b>' + esc(x.aspek) + ':</b> ' + inl(x.rubrik || '') + '</li>'; }).join('') + '</ul>';
+      }
     }
     var kin = arr(as.kinerja);
     if (kin.length) {
@@ -392,7 +407,7 @@
         kin.map(function (x) { var s = arr(x.skor); return '<tr><td><b>' + esc(x.aspek) + '</b></td>' + [0, 1, 2, 3].map(function (k) { return '<td dir="auto">' + inl(s[k] || '') + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table><p class="kecil">Nilai unjuk kerja = (skor perolehan ÷ ' + (kin.length * 4) + ') × 100</p>';
     }
     var sum = arr(as.sumatif);
-    h += '<h3>C. Asesmen Sumatif</h3>' + (sum.length ? '<ol>' + sum.map(function (x) { return '<li dir="auto">' + inl(x.soal || x) + (x.kunci ? '<div class="kunci kecil"><b>Kunci/pedoman:</b> ' + inl(x.kunci) + '</div>' : '') + '</li>'; }).join('') + '</ol>' : '<p>-</p>');
+    h += '<h3>C. Asesmen Sumatif</h3>' + (sum.length ? '<ol>' + sum.map(function (x) { return '<li dir="auto">' + (x.level ? '<span class="sintaks">[' + esc(x.level) + ']</span> ' : '') + inl(x.soal || x).replace(/\n/g, '<br>') + (x.kunci ? '<div class="kunci kecil"><b>Kunci/pedoman:</b> ' + md(x.kunci) + '</div>' : '') + '</li>'; }).join('') + '</ol>' : '<p>-</p>');
     /* Lampiran II LKPD (tanpa kop) */
     var lk = m.lkpd;
     if (lk) {
@@ -415,14 +430,21 @@
 
   /* ---------------- tampilan / UI ---------------- */
   var DOCS = [['cp', 'CP', docCP], ['tp', 'TP', docTP], ['atp', 'ATP', docATP], ['prota', 'Prota', docProta], ['prosem', 'Prosem', docProsem], ['kktp', 'KKTP', docKKTP]];
-  var aktif = lsGet('perangkat-tab') || 'cp';
+  function singkat(t, n) { t = String(t || ''); return t.length > n ? t.slice(0, n - 1) + '…' : t; }
+  function isModul(id) { return String(id).indexOf('modul') === 0; }
   function docsList() {
-    var d = DOCS.slice();
-    if (P.modul_ajar.length) d.push(['modul', 'Modul Ajar', function () { return P.modul_ajar.map(docModul).join(''); }]);
-    if (P.tampilkan && P.tampilkan.length) d = d.filter(function (x) { return P.tampilkan.indexOf(x[0]) >= 0; });
-    if (!P.tp.length) d = d.filter(function (x) { return x[0] === 'cp' || x[0] === 'modul'; });
+    var d = DOCS.slice(), M = P.modul_ajar;
+    // satu tab per modul; modul terbaru (terakhir) di paling kanan
+    M.forEach(function (m, i) {
+      d.push(['modul-' + (i + 1), M.length > 1 ? 'Modul ' + (i + 1) + ': ' + singkat(m.judul_topik || m.topik || '', 22) : 'Modul Ajar', function () { return docModul(m, 0); }]);
+    });
+    if (P.tampilkan && P.tampilkan.length) d = d.filter(function (x) { return P.tampilkan.indexOf(x[0]) >= 0 || (isModul(x[0]) && P.tampilkan.indexOf('modul') >= 0); });
+    if (!P.tp.length) d = d.filter(function (x) { return x[0] === 'cp' || isModul(x[0]); });
     return d;
   }
+  var aktif = lsGet('perangkat-tab') || 'cp';
+  // Canvas modul ajar selalu dibuka pada modul TERBARU, bukan tab yang tersimpan dari Canvas lain
+  if (P.modul_ajar.length && (isModul(aktif) || (P.tampilkan && P.tampilkan.indexOf('modul') >= 0))) aktif = 'modul-' + P.modul_ajar.length;
   /* ---------------- gaya ---------------- */
   // Lembar A4 tetap: 794 × 1123 px (96 dpi). Area isi: margin atas 45, bawah 57, kiri-kanan 57 px.
   var CSS = '\
@@ -448,11 +470,11 @@ html,body{margin:0;background:#e4e9e5;color:var(--teks);font-family:system-ui,-a
 .kop img{width:100%;display:block;margin-bottom:6px}.kop-kosong{border:1px dashed #b89146;color:#8a6d2e;text-align:center;padding:8px;font-family:sans-serif;font-size:11px;margin-bottom:6px}\
 .judul{text-align:center;font-size:13pt;text-transform:uppercase;margin:4px 0 2px}.subjudul{text-align:center;font-size:12pt;margin:0 0 8px;font-weight:700}\
 .isi h3{font-size:11.5pt;margin:10px 0 5px}.sub{font-weight:700;margin:8px 0 4px}.pt{font-weight:700;background:#eef2ef;padding:3px 6px;margin:10px 0 4px}\
-.isi p{margin:0 0 5px}.isi ul,.isi ol{margin:2px 0 6px;padding-left:22px}\
+.isi p{margin:0 0 5px}.isi ul,.isi ol{margin:2px 0 6px;padding-left:0;padding-inline-start:22px}\
 table.identitas{margin:0 0 8px;border-collapse:collapse}.identitas td{padding:1px 4px;vertical-align:top}.identitas .lbl{width:150px}.identitas .sep{width:10px}\
 table.grid{width:100%;border-collapse:collapse;margin:4px 0 8px;table-layout:auto}.grid th,.grid td{border:1px solid #000;padding:3px 5px;vertical-align:top;word-wrap:break-word;overflow-wrap:break-word}\
 .grid th{background:#e8ece9;text-align:center;vertical-align:middle}\
-.grid p{margin:0 0 3px}.grid ul,.grid ol{margin:0;padding-left:16px}\
+.grid p{margin:0 0 3px}.grid ul,.grid ol{margin:0;padding-left:0;padding-inline-start:16px}\
 .c{text-align:center}.kecil{font-size:9pt}.n{font-weight:400}.grup td{background:#f1f4f2}.total td{font-weight:700;background:#f1f4f2}.cp-el{margin-top:2px}\
 .peringatan{color:#a30000;font-weight:700}.sumber{font-size:9pt;font-style:italic;margin:0 0 6px}\
 .prosem{font-size:8pt;table-layout:fixed}.prosem th,.prosem td{padding:2px 2px}.prosem .mg{text-align:center;padding:2px 0}.prosem td.libur{background:#d6d6d6}.prosem td.isi-jp{background:#dce7df;font-weight:700}.prosem td.cad{background:#f6edd9}\
@@ -589,7 +611,7 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
       im.onerror = function () { KOP_R = 0; KOP_SRC = P.kop; render(); }; im.src = P.kop; return;
     }
     var list = docsList();
-    if (aktif !== 'semua' && !list.some(function (d) { return d[0] === aktif; })) aktif = list[0][0];
+    if (aktif !== 'semua' && !list.some(function (d) { return d[0] === aktif; })) aktif = list[list.length - 1][0] && isModul(list[list.length - 1][0]) ? list[list.length - 1][0] : list[0][0];
     el('pa-tabs').innerHTML = list.map(function (d) { return '<button data-tab="' + d[0] + '">' + d[1] + '</button>'; }).join('') + '<button data-tab="semua">Semua</button>';
     var wrap = el('pa-wrap'); wrap.innerHTML = '';
     list.forEach(function (d) {
@@ -603,12 +625,30 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
     var info = [];
     if (GAGAL.length) info.push('Sebagian data rujukan gagal dimuat (' + GAGAL.join(', ') + '). Periksa koneksi internet lalu muat ulang.');
     if (!cpMapel()) info.push('CP mapel "' + esc(I.mapel_id) + '" Fase ' + I.fase + ' tidak ditemukan.');
+    var cpm = cpMapel(), elNama = cpm ? cpm.elemen.map(function (e) { return e.nama; }) : [];
+    if (cpm) {
+      var salahEl = [];
+      P.tp.forEach(function (t) { var n = String(t.elemen || '').toLowerCase().trim(); if (!elNama.some(function (e) { return e.toLowerCase() === n; }) && salahEl.indexOf(t.elemen) < 0) salahEl.push(t.elemen); });
+      if (salahEl.length) info.push('<span class="peringatan">Elemen "' + salahEl.map(esc).join('", "') + '" tidak ada di CP ' + esc(cpm.nama) + ' Fase ' + I.fase + '. Elemen yang sah: ' + elNama.map(esc).join('; ') + '. TP pada elemen tersebut tidak berpijak pada CP fase ini.</span>');
+    }
+    var Kst = STR[I.kelas] && STR[I.kelas][I.mapel_id];
+    if (P.pengaturan.jp_minggu && Kst && +P.pengaturan.jp_minggu !== Kst.jpm) info.push('JP per minggu diatur <b>' + esc(P.pengaturan.jp_minggu) + ' JP</b>, sedangkan struktur kurikulum KMA 1503 menetapkan <b>' + Kst.jpm + ' JP</b> untuk ' + esc(I.mapel_nama || '') + ' kelas ' + I.kelas + '. Pastikan sesuai jadwal madrasah.');
+    if (P.modul_ajar.length && Object.keys(MODEL).length) P.modul_ajar.forEach(function (m, i) { if (m.model && !MODEL[m.model]) info.push('<span class="peringatan">Modul ' + (i + 1) + ' memakai model "' + esc(m.model_nama || m.model) + '" yang tidak ada di database 25 model praktik pedagogis.</span>'); });
+    if (JP_TEBAK && !P.pengaturan.jp_minggu) info.push('<span class="peringatan">JP per minggu mapel ini tidak ditemukan di struktur kurikulum; sementara dipakai 2 JP. Isi kolom JP/mg di atas sesuai jadwal madrasah.</span>');
+    if (P.modul_ajar.length > 1) info.push('<b>Canvas ini berisi ' + P.modul_ajar.length + ' modul ajar.</b> Yang tampil pertama adalah modul terbaru (' + esc(P.modul_ajar[P.modul_ajar.length - 1].judul_topik || '') + '). Modul lain ada di tab "Modul 1", "Modul 2", dst.');
+    P.modul_ajar.forEach(function (m, i) {
+      var hilang = arr(m.tp_kode).filter(function (k) { return !P.tp.some(function (t) { return t.kode === k; }); });
+      if (hilang.length) info.push('<span class="peringatan">Modul ' + (i + 1) + ': kode TP ' + esc(hilang.join(', ')) + ' tidak ada di daftar TP. Tujuan pembelajaran dan CP modul ini tidak lengkap.</span>');
+      if (!arr(m.tp_kode).length) info.push('<span class="peringatan">Modul ' + (i + 1) + ' belum mencantumkan tp_kode.</span>');
+    });
     if (arr(P.riwayat_model).length) info.push('<b>Model yang sudah dipakai:</b> ' + arr(P.riwayat_model).map(function (r) { return esc((MODEL[r] && MODEL[r].nama) || r); }).join(', ') + '.');
     info.push('Tampilan ini sama persis dengan hasil cetak/PDF (A4 portrait). Teks dapat diedit langsung; tata letak halaman dirapikan otomatis setelah selesai mengedit. Ubah pengaturan (KKTP, JP, minggu efektif, Atur TP) sebelum mengedit teks, karena pengaturan menyusun ulang dokumen.');
     el('pa-info').innerHTML = info.join('<br>');
   }
   function lembarTampil() { return [].slice.call(document.querySelectorAll('#pa-wrap .dok')).filter(function (d) { return d.style.display !== 'none'; }).reduce(function (a, d) { return a.concat([].slice.call(d.querySelectorAll('.lembar'))); }, []); }
-  function namaFile(ext) { var t = aktif === 'semua' ? 'Perangkat Ajar' : (docsList().filter(function (d) { return d[0] === aktif; })[0] || [0, 'Dokumen'])[1]; return (t + ' - ' + (I.mapel_nama || '') + ' - Kelas ' + I.kelas + ' - ' + (I.guru.nama || '')).replace(/[\\/:*?"<>|]+/g, '') + '.' + ext; }
+  function namaFile(ext) {
+    if (P.nama_dokumen && (aktif === 'semua' || (isModul(aktif) && P.modul_ajar.length === 1))) return String(P.nama_dokumen).replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' ').trim() + '.' + ext;
+    var t = aktif === 'semua' ? 'Perangkat Ajar' : isModul(aktif) ? 'Modul Ajar ' + ((P.modul_ajar[+aktif.split('-')[1] - 1] || {}).judul_topik || '') : (docsList().filter(function (d) { return d[0] === aktif; })[0] || [0, 'Dokumen'])[1]; return (t + ' - ' + (I.mapel_nama || '') + ' - Kelas ' + I.kelas + ' - ' + (I.guru.nama || '')).replace(/[\\/:*?"<>|]+/g, '') + '.' + ext; }
   function unduh(blob, name) { var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 2000); }
 
   /* ---------------- ekspor ---------------- */
@@ -696,7 +736,8 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
   /* ---------------- inisialisasi ---------------- */
   function init() {
     var st = document.createElement('style'); st.textContent = CSS; document.head.appendChild(st);
-    document.title = 'Perangkat Ajar ' + (I.mapel_nama || '') + ' Kelas ' + I.kelas;
+    var mAkhir = P.modul_ajar[P.modul_ajar.length - 1];
+    document.title = P.nama_dokumen || (mAkhir && P.tampilkan && P.tampilkan.indexOf('modul') >= 0 ? 'Modul Ajar – ' + (I.mapel_nama || '') + ' ' + I.kelas + ' – ' + (mAkhir.judul_topik || '') : 'Perangkat Ajar – ' + (I.mapel_nama || '') + ' ' + I.kelas + ' – ' + String(I.tahun_pelajaran || '').replace('/', '-'));
     var root = el('app') || document.body;
     root.innerHTML = '<div id="pa-bar"><span class="brand">Perangkat Ajar ' + esc(P.jenjang) + '</span><span id="pa-tabs"></span><span class="sep"></span>' +
       '<label class="btn">Unggah Kop<input type="file" id="kop-in" accept="image/*" hidden></label><button data-act="hapus-kop">Hapus Kop</button><span class="sep"></span>' +
@@ -706,7 +747,7 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
       '<div id="pa-panel"></div><div id="pa-info"></div><div id="pa-wrap"><div class="dok"><div class="lembar"><div class="isi" style="font-family:sans-serif">Memuat data rujukan (CP, struktur kurikulum, kalender)…</div></div></div></div>';
     root.addEventListener('click', function (e) {
       var t = e.target.closest('[data-tab],[data-act]'); if (!t) return;
-      if (t.dataset.tab) { aktif = t.dataset.tab; lsSet('perangkat-tab', aktif); tampilkanAktif(); return; }
+      if (t.dataset.tab) { aktif = t.dataset.tab; if (!isModul(aktif)) lsSet('perangkat-tab', aktif); tampilkanAktif(); return; }
       var a = t.dataset.act;
       if (a === 'cetak') cetak(); else if (a === 'pdf') pdf(); else if (a === 'word') wordDoc(); else if (a === 'html') unduhHTML(); else if (a === 'json') unduhJSON();
       else if (a === 'hapus-kop') { P.kop = ''; lsSet(kopKey, null); render(); }
