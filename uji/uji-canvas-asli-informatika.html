@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Perangkat Ajar</title>
+<script>
+window.PERANGKAT = {"data_base":"../data/",
+  "jenjang": "MA",
+  "identitas": {
+    "madrasah": "MA Syubbanul Wathon",
+    "kepala": {
+      "nama": "Muflihan Ahmad Kundriasworo, S.Si., Gr.",
+      "label_nip": "NIPY",
+      "nip": "0103182"
+    },
+    "guru": {
+      "nama": "Muflihan Ahmad Kundriasworo, S.Si., Gr.",
+      "label_nip": "NIPY",
+      "nip": "0103182"
+    },
+    "mapel_id": "informatika",
+    "mapel_nama": "Informatika",
+    "program": "reguler",
+    "kelas": "X",
+    "fase": "E",
+    "tahun_pelajaran": "2026/2027",
+    "semester": "1",
+    "tempat": "Tegalrejo",
+    "tanggal": "13 Juli 2026"
+  },
+  "pengaturan": {
+    "kktp": 75,
+    "jp_minggu": 3
+  },
+  "tp": [
+    {
+      "kode": "E.1.1",
+      "elemen": "Berpikir Komputasional",
+      "topik": "Berpikir Komputasional",
+      "tp": "Menerapkan strategi algoritmik standar (pencarian dan pengurutan) melalui empat pilar berpikir komputasional untuk menyelesaikan persoalan komputasi dalam kehidupan sehari-hari.",
+      "materi": "Empat Pilar Berpikir Komputasional, Algoritma Pencarian (Searching), dan Pengurutan (Sorting)",
+      "jp": 6,
+      "semester": 1,
+      "kbc": [2, 4, 5],
+      "dpl": [3, 4, 5, 8],
+      "kktp": [
+        "Belum mampu mengidentifikasi pola pencarian dan pengurutan sederhana",
+        "Mampu menjelaskan langkah algoritma pencarian atau pengurutan dengan bantuan",
+        "Mampu menerapkan strategi pencarian dan pengurutan standar pada studi kasus sederhana secara tepat",
+        "Mampu merancang dan membandingkan efisiensi strategi algoritmik untuk menyelesaikan persoalan kompleks secara mandiri"
+      ]
+    },
+    {
+      "kode": "E.1.2",
+      "elemen": "Berpikir Komputasional",
+      "topik": "Berpikir Komputasional",
+      "tp": "Memanfaatkan struktur data dasar (tumpukan/stack dan antrean/queue) untuk memodelkan dan memecahkan masalah yang mengandung data bervolume besar.",
+      "materi": "Struktur Data Dasar (Stack dan Queue)",
+      "jp": 3,
+      "semester": 1,
+      "kbc": [2, 4, 5],
+      "dpl": [3, 4, 5, 8],
+      "kktp": [
+        "Belum memahami perbedaan prinsip kerja stack (LIFO) dan queue (FIFO)",
+        "Mampu mengidentifikasi contoh penerapan stack dan queue dalam kehidupan sehari-hari",
+        "Mampu mensimulasikan operasi dasar stack dan queue untuk memodelkan persoalan data",
+        "Mampu memilih dan mengoptimalkan struktur data yang paling efektif untuk menyelesaikan masalah bervolume besar"
+      ]
+    },
+    {
+      "kode": "E.2.1",
+      "elemen": "Literasi Digital",
+      "topik": "Teknologi Informasi dan Komunikasi",
+      "tp": "Mengintegrasikan konten antaraplikasi perkantoran (pengolah kata, pengolah lembar kerja, dan presentasi) untuk menyusun laporan kerja yang sistematis.",
+      "materi": "Integrasi Aplikasi Perkantoran",
+      "jp": 9,
+      "semester": 1,
+      "kbc": [2, 5],
+      "dpl": [4, 6],
+      "kktp": [
+        "Belum mampu menggabungkan objek antaraplikasi perkantoran",
+        "Mampu menyalin dan menempelkan data antaraplikasi perkantoran secara manual",
+        "Mampu mengintegrasikan grafik/tabel dari pengolah angka ke pengolah kata dan presentasi secara dinamis",
+        "Mampu menghasilkan laporan terpadu lintas aplikasi dengan tata letak profesional dan otomatis diperbarui"
+      ]
+    },
+    {
+      "kode": "E.2.2",
+      "elemen": "Literasi Digital",
+      "topik": "Literasi Digital dan Evaluasi Informasi",
+      "tp": "Menerapkan mesin pencari informasi digital secara efektif serta mengevaluasi kredibilitas sumber informasi untuk menangkal hoaks.",
+      "materi": "Pencarian Informasi Efektif dan Evaluasi Kredibilitas Sumber",
+      "jp": 9,
+      "semester": 1,
+      "kbc": [2, 3],
+      "dpl": [2, 3],
+      "kktp": [
+        "Belum mampu memilah informasi valid dan hoaks dari hasil pencarian internet",
+        "Mampu menggunakan kata kunci dasar untuk mencari informasi di internet",
+        "Mampu menggunakan operator pencarian lanjutan dan memverifikasi kredibilitas sumber informasi",
+        "Mampu menganalisis bias informasi secara kritis dan menyusun rujukan terpercaya secara etis"
+      ]
+    },
+    {
+      "kode": "E.2.3",
+      "elemen": "Literasi Digital",
+      "topik": "Sistem Komputer dan Jaringan",
+      "tp": "Menjelaskan cara kerja sistem komputer, interaksi perangkat keras dan perangkat lunak, serta mekanisme konektivitas jaringan komputer dan internet.",
+      "materi": "Sistem Komputer, Jaringan Lokal, dan Internet",
+      "jp": 12,
+      "semester": 1,
+      "kbc": [2],
+      "dpl": [3, 6],
+      "kktp": [
+        "Belum dapat membedakan fungsi perangkat keras, sistem operasi, dan perangkat lunak aplikasi",
+        "Mampu menyebutkan komponen utama sistem komputer dan jenis jaringan dasar",
+        "Mampu menjelaskan alur pemrosesan data pada komputer dan mekanisme komunikasi data dalam jaringan",
+        "Mampu menganalisis permasalahan konektivitas jaringan sederhana dan merancang konfigurasi dasar"
+      ]
+    },
+    {
+      "kode": "E.2.4",
+      "elemen": "Literasi Digital",
+      "topik": "Keamanan Digital dan Etika Berinternet",
+      "tp": "Menerapkan prinsip keamanan data pribadi, perlindungan identitas digital, dan etika berkomunikasi di ruang digital secara bertanggung jawab.",
+      "materi": "Keamanan Siber Dasar dan Etika Digital",
+      "jp": 9,
+      "semester": 1,
+      "kbc": [1, 3],
+      "dpl": [1, 2],
+      "kktp": [
+        "Belum memahami risiko kebocoran data pribadi di ruang digital",
+        "Mampu mengenali ancaman keamanan dasar seperti phishing dan kata sandi lemah",
+        "Mampu menerapkan autentikasi ganda, pengelolaan kata sandi aman, serta etika digital dalam berinteraksi",
+        "Mampu mengaudit keamanan akun pribadi dan mengampanyekan budaya digital yang santun serta aman"
+      ]
+    },
+    {
+      "kode": "E.3.1",
+      "elemen": "Analisis Data",
+      "topik": "Pengolahan dan Visualisasi Data",
+      "tp": "Melakukan pengumpulan, pembersihan, transformasi, dan visualisasi data menggunakan perkakas pengolah lembar kerja untuk menemukan pola informasi.",
+      "materi": "Pengumpulan, Pembersihan, dan Visualisasi Data",
+      "jp": 12,
+      "semester": 2,
+      "kbc": [2, 4],
+      "dpl": [3, 4],
+      "kktp": [
+        "Belum mampu mengolah data mentah menjadi tabel terstruktur",
+        "Mampu memasukkan data dan membuat grafik sederhana dengan bimbingan",
+        "Mampu membersihkan data, menggunakan fungsi agregasi/logika, dan menyajikan visualisasi yang relevan",
+        "Mampu menginterpretasikan tren dari data kompleks dan menyajikannya dalam dasbor visual yang informatif"
+      ]
+    },
+    {
+      "kode": "E.3.2",
+      "elemen": "Analisis Data",
+      "topik": "Privasi dan Keamanan Data",
+      "tp": "Menerapkan prinsip privasi dan tata kelola perlindungan data dalam proses pengumpulan serta publikasi informasi berbasis data.",
+      "materi": "Privasi, Anonimisasi, dan Tata Kelola Data",
+      "jp": 6,
+      "semester": 2,
+      "kbc": [3, 5],
+      "dpl": [2, 3],
+      "kktp": [
+        "Belum memahami batasan data publik dan data sensitif",
+        "Mampu mengidentifikasi jenis data pribadi yang perlu dilindungi",
+        "Mampu menerapkan teknik penyamaran/anonimisasi data sebelum dipublikasikan",
+        "Mampu mengevaluasi kepatuhan privasi data dalam studi kasus pengolahan data masyarakat"
+      ]
+    },
+    {
+      "kode": "E.4.1",
+      "elemen": "Algoritma dan Pemrograman",
+      "topik": "Pemrograman Prosedural",
+      "tp": "Menulis program komputer menggunakan bahasa pemrograman prosedural yang menerapkan variabel, tipe data, ekspresi, serta struktur kontrol percabangan dan perulangan.",
+      "materi": "Dasar Pemrograman Prosedural (Input-Output, Percabangan, Perulangan)",
+      "jp": 18,
+      "semester": 2,
+      "kbc": [2],
+      "dpl": [3, 4],
+      "kktp": [
+        "Belum mampu menerjemahkan algoritma sederhana ke dalam sintaks bahasa pemrograman",
+        "Mampu menulis program sederhana dengan input-output dasar namun masih terdapat kesalahan logika",
+        "Mampu mengembangkan program yang memanfaatkan percabangan dan perulangan dengan benar",
+        "Mampu membangun program terstruktur yang bersih, bebas galat, dan terdokumentasi dengan baik"
+      ]
+    },
+    {
+      "kode": "E.4.2",
+      "elemen": "Algoritma dan Pemrograman",
+      "topik": "Modularisasi dan Pengujian Program",
+      "tp": "Mengembangkan program modular menggunakan fungsi/prosedur serta melakukan pengujian dan penelusuran kesalahan (debugging) untuk memastikan kebenaran program.",
+      "materi": "Fungsi/Prosedur dan Pengujian Program (Debugging)",
+      "jp": 12,
+      "semester": 2,
+      "kbc": [2],
+      "dpl": [3, 4],
+      "kktp": [
+        "Belum mampu memecah kode program menjadi fungsi atau prosedur",
+        "Mampu membuat fungsi sederhana tanpa parameter dengan bimbingan",
+        "Mampu menggunakan fungsi berparameter serta memperbaiki kesalahan sintaks maupun logika",
+        "Mampu merancang arsitektur program modular dan menyusun kasus uji komprehensif untuk memvalidasi program"
+      ]
+    }
+  ],
+  "modul_ajar": [
+    {
+      "tp_kode": ["E.1.1", "E.1.2"],
+      "judul_topik": "Bab 1: Berpikir Komputasional (Strategi Algoritmik, Pencarian, Pengurutan, dan Struktur Data)",
+      "semester": 1,
+      "jp": 9,
+      "dpl": [3, 4, 5, 8],
+      "kbc": [2, 4, 5],
+      "identifikasi": {
+        "murid": "Peserta didik kelas X MA Reguler yang seluruhnya tinggal di lingkungan asrama pesantren, terbiasa dengan kedisiplinan kolektif dan musyawarah kelompok, serta melaksanakan pembelajaran praktik di laboratorium komputer dengan ketersediaan perangkat PC/komputer memadai.",
+        "materi": "Empat pilar berpikir komputasional (dekomposisi, pengenalan pola, abstraksi, algoritma), strategi algoritmik standar (pencarian linear dan biner, pengurutan bubble sort, selection sort, dan insertion sort), serta struktur data dasar tumpukan (stack) dan antrean (queue)."
+      },
+      "integrasi_kbc": [
+        {
+          "kode": 2,
+          "teks": "Cinta Ilmu: Menumbuhkan rasa ingin tahu dan ketekunan dalam merancang algoritma yang efisien serta sistematis sebagai wujud syukur atas anugerah akal."
+        },
+        {
+          "kode": 4,
+          "teks": "Cinta Sesama: Mengembangkan budaya saling menghargai pendapat, berbagi peran adil, dan bekerja sama dalam tim saat menyelesaikan tantangan komputasional."
+        },
+        {
+          "kode": 5,
+          "teks": "Cinta Tanah Air dan Lingkungan: Menerapkan efisiensi berpikir dan optimalisasi sumber daya dalam memecahkan persoalan tata kelola kehidupan sehari-hari di asrama dan masyarakat."
+        }
+      ],
+      "pengantar_tp": "Melalui pembelajaran berbasis tim (Team-Based Learning) dan simulasi di laboratorium komputer, murid mampu:",
+      "model": "tbl",
+      "model_nama": "Team-Based Learning (TBL)",
+      "desain": {
+        "lintas_disiplin": "Matematika (logika himpunan, barisan, dan efisiensi langkah) serta Keterampilan Hidup Pesantren (manajemen antrean dan penataan barang di asrama).",
+        "topik": "Penerapan Berpikir Komputasional pada Masalah Pencarian, Pengurutan, dan Struktur Data",
+        "praktik_pedagogis": "Menerapkan model Team-Based Learning (TBL) dalam 3 pertemuan (masing-masing 3 JP) yang mencakup tahap persiapan mandiri/bacaan awal, Readiness Assurance Process (iRAT individual dan tRAT kelompok dengan umpan balik langsung), serta Application-Focused Team Exercises (studi kasus dan simulasi algoritmik di laboratorium komputer).",
+        "kemitraan": "Kolaborasi antar-santri dalam tim heterogen lintas kamar asrama serta pengelola laboratorium komputer madrasah.",
+        "lingkungan": "Laboratorium komputer MA Syubbanul Wathon yang ditata berkelompok (4-5 murid per meja/klaster PC) dengan koneksi intranet/perangkat lunak lembar kerja dan simulasi algoritma.",
+        "digital": "Aplikasi spreadsheet (LibreOffice Calc / Microsoft Excel), simulator visualisasi algoritma sorting/searching, dan platform kuis interaktif lokal lab."
+      },
+      "pertemuan": [
+        {
+          "nomor": 1,
+          "jp": 3,
+          "judul": "Empat Pilar Berpikir Komputasional dan Algoritma Pencarian (Searching)",
+          "awal": [
+            {
+              "sintaks": "Fase 1 – Persiapan dan Pembentukan Tim Permanen",
+              "teks": "Guru membuka pembelajaran dengan salam, doa bersama, dan mengecek kesiapan PC di laboratorium komputer. Guru mengelompokkan murid ke dalam tim heterogen permanen beranggotakan 4–5 orang lintas kamar asrama, lalu meninjau ringkasan bahan bacaan awal mengenai empat pilar berpikir komputasional dan konsep pencarian data."
+            }
+          ],
+          "memahami": [
+            {
+              "sintaks": "Fase 2 – Readiness Assurance Process (iRAT & tRAT)",
+              "teks": "Murid mengerjakan Individual Readiness Assurance Test (iRAT) berisi 10 soal pilihan ganda konseptual di PC masing-masing selama 15 menit tanpa berdiskusi. Selanjutnya, dalam tim permanen yang sama, murid mengerjakan Team Readiness Assurance Test (tRAT) pada soal yang sama melalui musyawarah untuk mencapai konsensus jawaban, diikuti umpan balik langsung (immediate feedback) dan klarifikasi konsep oleh guru mengenai dekomposisi, abstraksi, pengenalan pola, algoritma, serta perbedaan pencarian linear (Linear Search) dan pencarian biner (Binary Search)."
+            }
+          ],
+          "mengaplikasi": [
+            {
+              "sintaks": "Fase 3 – Application-Focused Team Exercises",
+              "teks": "Setiap tim menerima studi kasus serentak berupa dataset 500 nomor induk santri dan jadwal piket asrama pada aplikasi spreadsheet di PC lab. Tim menerapkan 4 pilar berpikir komputasional untuk membandingkan jumlah langkah pencarian data santri menggunakan metode Linear Search pada data acak versus Binary Search pada data terurut, lalu mendokumentasikan hasil perbandingan efisiensinya pada LKPD Aktivitas 1."
+            }
+          ],
+          "merefleksi": [
+            {
+              "sintaks": "Fase 4 – Pleno Antar-Tim dan Refleksi Konsep",
+              "teks": "Perwakilan tim mempresentasikan temuan jumlah langkah minimum dan maksimum dari kedua algoritma pencarian, sementara tim lain memberikan tanggapan kritis. Guru memfasilitasi refleksi tentang bagaimana keteraturan data mempercepat pencarian informasi dalam kehidupan di asrama."
+            }
+          ],
+          "penutup": [
+            {
+              "sintaks": "Fase 5 – Penguatan dan Penugasan Persiapan Pertemuan Berikutnya",
+              "teks": "Guru merangkum poin kunci efisiensi algoritma pencarian, memberikan apresiasi kepada tim dengan kolaborasi terbaik, membagikan bahan bacaan awal tentang algoritma pengurutan (Sorting) untuk dipelajari di asrama, dan menutup pertemuan dengan doa."
+            }
+          ]
+        },
+        {
+          "nomor": 2,
+          "jp": 3,
+          "judul": "Strategi Algoritmik Pengurutan (Sorting) dan Analisis Efisiensi Langkah",
+          "awal": [
+            {
+              "sintaks": "Fase 1 – Pengkondisian Tim dan Apersepsi Bahan Bacaan",
+              "teks": "Guru menyapa murid di laboratorium komputer, memastikan setiap tim duduk pada klaster PC yang telah ditetapkan, dan mengaitkan kesulitan pencarian data tidak terurut pada pertemuan sebelumnya dengan kebutuhan algoritma pengurutan (Bubble Sort, Selection Sort, dan Insertion Sort)."
+            }
+          ],
+          "memahami": [
+            {
+              "sintaks": "Fase 2 – Readiness Assurance Process (iRAT & tRAT)",
+              "teks": "Murid melaksanakan iRAT selama 15 menit di PC untuk menguji pemahaman awal mekanisme pertukaran (swap) dan pergeseran elemen pada Bubble Sort, Selection Sort, dan Insertion Sort. Kemudian tim berdiskusi dalam tRAT untuk menyepakati jawaban terbaik dan menerima klarifikasi langsung dari guru mengenai kompleksitas langkah perbandingan serta pertukaran pada tiap algoritma."
+            }
+          ],
+          "mengaplikasi": [
+            {
+              "sintaks": "Fase 3 – Application-Focused Team Exercises",
+              "teks": "Tim menjalankan simulasi visualisasi pengurutan dan menyusun tabel penelusuran (tracing) di spreadsheet untuk mengurutkan data nilai hafalan dan poin kedisiplinan santri. Setiap tim menguji ketiga algoritma pada tiga kondisi dataset (acak, hampir terurut, dan terurut terbalik) guna mencatat jumlah perbandingan (comparisons) dan pertukaran (swaps) pada LKPD Aktivitas 2."
+            }
+          ],
+          "merefleksi": [
+            {
+              "sintaks": "Fase 4 – Debat Pilihan Solusi dan Evaluasi Tim",
+              "teks": "Seluruh tim secara serentak memaparkan rekomendasi algoritma pengurutan paling efisien untuk masing-masing kondisi dataset dan mempertahankan argumennya berdasarkan data hasil simulasi. Guru membimbing murid merefleksikan nilai ketekunan dan kecermatan (Cinta Ilmu) dalam memilih strategi terbaik."
+            }
+          ],
+          "penutup": [
+            {
+              "sintaks": "Fase 5 – Sintesis Materi dan Persiapan Pertemuan Ketiga",
+              "teks": "Guru menegaskan simpulan kapan Bubble, Selection, atau Insertion Sort unggul digunakan, menginformasikan bahan bacaan mandiri tentang struktur data Stack dan Queue, serta menutup pembelajaran dengan doa."
+            }
+          ]
+        },
+        {
+          "nomor": 3,
+          "jp": 3,
+          "judul": "Struktur Data Dasar (Stack dan Queue) serta Pemecahan Masalah Terpadu",
+          "awal": [
+            {
+              "sintaks": "Fase 1 – Aktivasi Tim dan Kontekstualisasi Masalah Asrama",
+              "teks": "Guru membuka pembelajaran di lab komputer, mengecek kesiapan tim permanen, dan memantik diskusi singkat tentang pola antrean makan di dapur pesantren (FIFO) dibandingkan tumpukan kitab atau nampan di rak asrama (LIFO)."
+            }
+          ],
+          "memahami": [
+            {
+              "sintaks": "Fase 2 – Readiness Assurance Process (iRAT & tRAT)",
+              "teks": "Murid mengerjakan iRAT mengenai operasi dasar Stack (Push, Pop, Peek) dan Queue (Enqueue, Dequeue, Front/Rear) secara individu di PC, dilanjutkan diskusi konsensus tRAT dalam tim. Guru memberikan umpan balik langsung dan meluruskan miskonsepsi mengenai kondisi overflow maupun underflow pada struktur data."
+            }
+          ],
+          "mengaplikasi": [
+            {
+              "sintaks": "Fase 3 – Application-Focused Team Exercises",
+              "teks": "Tim menyelesaikan tantangan terpadu pada LKPD Aktivitas 3 di komputer, yaitu memodelkan sistem layanan kesehatan UKS asrama (kombinasi antrean reguler dan prioritas darurat) serta simulasi fitur Undo/Redo pada penyuntingan dokumen menggunakan tabel simulasi operasi Stack dan Queue secara berurutan."
+            }
+          ],
+          "merefleksi": [
+            {
+              "sintaks": "Fase 4 – Galeri Solusi Tim dan Peer Evaluation",
+              "teks": "Tim mempresentasikan model alur data Stack dan Queue yang telah dirancang, saling mengevaluasi ketepatan urutan keluaran data antar-tim, serta mengisi lembar refleksi dan penilaian sejawat atas kontribusi setiap anggota selama 3 pertemuan TBL."
+            }
+          ],
+          "penutup": [
+            {
+              "sintaks": "Fase 5 – Penguatan Akhir Bab 1 dan Tindak Lanjut",
+              "teks": "Guru memberikan penguatan menyeluruh mengenai keterkaitan berpikir komputasional, algoritma pencarian/pengurutan, dan struktur data sebagai fondasi pemrograman, menginformasikan jadwal asesmen sumatif, serta menutup dengan doa."
+            }
+          ]
+        }
+      ],
+      "asesmen": {
+        "diagnostik": [
+          {
+            "pertanyaan": "Jika kamu diminta mencari satu nama santri di antara 300 lembar kartu identitas yang belum diurutkan dan yang sudah diurutkan abjad, bagaimana perbedaan strategi pencarianmu?",
+            "indikator": "Mengidentifikasi kemampuan awal murid dalam mengenali pola efisiensi pencarian dan pentingnya keteraturan data.",
+            "tindak_lanjut": "Murid yang masih menggunakan cara acak diberikan pendampingan pengenalan pola pencarian berurutan dan pembagian dua (divide and conquer) saat fase klarifikasi tRAT."
+          },
+          {
+            "pertanyaan": "Pernahkah kamu menggunakan tombol Undo (Ctrl+Z) saat mengetik di komputer? Menurutmu, perintah mana yang pertama kali dibatalkan oleh komputer?",
+            "indikator": "Mengukur intuisi awal murid terhadap prinsip Last-In First-Out (LIFO) dalam kehidupan sehari-hari dan penggunaan komputer.",
+            "tindak_lanjut": "Jawaban murid dijadikan jembatan apersepsi untuk memperkenalkan istilah Push dan Pop pada struktur data Stack."
+          },
+          {
+            "pertanyaan": "Bagaimana pengalamanmu bekerja dalam kelompok saat menyelesaikan tugas praktik di laboratorium komputer?",
+            "indikator": "Memetakan kesiapan kolaborasi, pembagian peran, dan tingkat kemahiran teknis penggunaan komputer antar-murid.",
+            "tindak_lanjut": "Data digunakan guru untuk menyusun tim permanen TBL yang heterogen secara kemampuan logika maupun keterampilan pengoperasian PC."
+          }
+        ],
+        "sikap": [
+          {
+            "aspek": "Cinta Ilmu (Ketekunan dan Rasa Ingin Tahu Algoritmik)",
+            "skor_4": "Sangat tekun menguji berbagai skenario data pada simulasi komputer, teliti menelusuri setiap langkah algoritma, dan aktif mengajukan pertanyaan analitis.",
+            "skor_3": "Tekun menyelesaikan simulasi algoritma sesuai instruksi dan teliti memeriksa hasil kerja tim.",
+            "skor_2": "Menyelesaikan simulasi komputer namun kurang teliti mengecek ulang kesalahan langkah algoritma.",
+            "skor_1": "Cenderung pasif dan tidak berupaya menelusuri langkah pemecahan masalah secara sistematis."
+          },
+          {
+            "aspek": "Cinta Sesama (Kolaborasi dan Musyawarah dalam Tim TBL)",
+            "skor_4": "Selalu menghargai pendapat seluruh anggota tim, aktif bermusyawarah saat tRAT, dan berbagi tugas penggunaan PC secara adil.",
+            "skor_3": "Bekerja sama dengan baik dalam tim, mendengarkan pendapat teman, dan menjalankan peran yang disepakati.",
+            "skor_2": "Terlibat dalam diskusi tim namun sesekali mendominasi atau kurang responsif terhadap masukan anggota lain.",
+            "skor_1": "Bekerja sendiri tanpa berkoordinasi dengan tim atau menyerahkan seluruh pekerjaan kepada teman."
+          },
+          {
+            "aspek": "Cinta Tanah Air dan Lingkungan (Efisiensi Sumber Daya & Tata Tertib Lab)",
+            "skor_4": "Merancang solusi komputasional yang hemat langkah serta menjaga kebersihan, kerapian, dan perangkat PC lab komputer dengan penuh tanggung jawab.",
+            "skor_3": "Memperhatikan efisiensi langkah algoritma dan mematuhi seluruh tata tertib penggunaan laboratorium komputer.",
+            "skor_2": "Mematuhi tata tertib lab komputer dengan sesekali perlu diingatkan mengenai kerapian perangkat setelah praktik.",
+            "skor_1": "Kurang memperhatikan ketertiban penggunaan perangkat PC dan mengabaikan efisiensi penyelesaian masalah."
+          }
+        ],
+        "kinerja": [
+          {
+            "aspek": "Penerapan Empat Pilar Berpikir Komputasional",
+            "skor": [
+              "Mampu menguraikan masalah kompleks (dekomposisi), menemukan pola, menyaring informasi penting (abstraksi), dan menyusun algoritma yang sangat sistematis serta bebas galat.",
+              "Mampu menerapkan keempat pilar berpikir komputasional dengan tepat pada studi kasus, meski bagian abstraksi atau algoritma masih memerlukan sedikit penyempurnaan.",
+              "Mampu mengidentifikasi komponen masalah dan pola dasar, namun penyusunan langkah algoritmanya masih kurang runtut.",
+              "Belum mampu menguraikan persoalan ke dalam langkah-langkah berpikir komputasional yang terstruktur."
+            ]
+          },
+          {
+            "aspek": "Akurasi Penelusuran (Tracing) Algoritma Searching dan Sorting",
+            "skor": [
+              "Seluruh tahapan perbandingan, pertukaran data, dan perhitungan jumlah langkah pada tabel simulasi tepat 100% dan disertai analisis perbandingan efisiensi yang tajam.",
+              "Sebagian besar tahapan penelusuran algoritma tepat (akurasi >80%) dan mampu menyimpulkan algoritma yang lebih efisien.",
+              "Terdapat beberapa kekeliruan dalam melacak perubahan posisi data antar-iterasi namun konsep dasarnya sudah terlihat.",
+              "Tidak mampu menelusuri perubahan posisi data pada algoritma pencarian maupun pengurutan dengan benar."
+            ]
+          },
+          {
+            "aspek": "Pemodelan Operasi Struktur Data Stack dan Queue",
+            "skor": [
+              "Mampu mensimulasikan seluruh urutan operasi Push, Pop, Enqueue, dan Dequeue secara akurat termasuk penanganan kondisi kosong/penuh pada studi kasus.",
+              "Mampu mensimulasikan operasi dasar Stack dan Queue dengan tepat pada skenario normal namun kurang cermat pada kasus batas.",
+              "Sering tertukar antara prinsip keluaran data LIFO (Stack) dan FIFO (Queue) pada beberapa langkah simulasi.",
+              "Belum mampu memodelkan aliran masuk dan keluar data menggunakan struktur Stack maupun Queue."
+            ]
+          }
+        ],
+        "sumatif": [
+          {
+            "nomor": 1,
+            "level": "C4 (Menganalisis)",
+            "soal": "Panitia penerimaan santri baru memiliki daftar 1.024 calon santri yang sudah terurut berdasarkan nomor pendaftaran. Jika panitia ingin mencari data seorang calon santri tertentu, bandingkan jumlah pemeriksaan maksimum yang diperlukan jika menggunakan Linear Search dengan Binary Search! Jelaskan mengapa perbedaannya sangat signifikan!",
+            "kunci": "Pada Linear Search, jumlah pemeriksaan maksimum adalah 1.024 kali (jika data berada di urutan paling akhir atau tidak ditemukan). Pada Binary Search, karena setiap langkah membagi ruang pencarian menjadi dua bagian (2^10 = 1.024), jumlah pemeriksaan maksimum hanya log2(1.024) + 1 = 11 kali. Perbedaannya sangat signifikan karena Binary Search mengeliminasi setengah dari sisa data pada setiap satu kali perbandingan sehingga pertumbuhan langkahnya bersifat logaritmik, bukan linear."
+          },
+          {
+            "nomor": 2,
+            "level": "C3 (Menerapkan)",
+            "soal": "Diberikan deret data skor kebersihan kamar asrama sebagai berikut: [45, 20, 35, 10, 50]. Tuliskan perubahan susunan data pada setiap akhir lintasan (pass) jika deret tersebut diurutkan secara menaik (ascending) menggunakan algoritma Selection Sort!",
+            "kunci": "Data awal: [45, 20, 35, 10, 50].\n- Pass 1 (nilai terkecil 10 ditukar dengan indeks ke-0 yaitu 45): [10, 20, 35, 45, 50].\n- Pass 2 (nilai terkecil dari sisa [20, 35, 45, 50] adalah 20, tetap di indeks ke-1): [10, 20, 35, 45, 50].\n- Pass 3 (nilai terkecil dari sisa [35, 45, 50] adalah 35, tetap di indeks ke-2): [10, 20, 35, 45, 50].\n- Pass 4 (nilai terkecil dari sisa [45, 50] adalah 45, tetap di indeks ke-3): [10, 20, 35, 45, 50].\nHasil akhir terurut: [10, 20, 35, 45, 50]."
+          },
+          {
+            "nomor": 3,
+            "level": "C5 (Mengevaluasi)",
+            "soal": "Sebuah daftar nilai ujian santri sebenarnya sudah hampir terurut dari kecil ke besar, hanya ada dua data yang posisinya tertukar berdekatan. Di antara Selection Sort dan Insertion Sort (yang dioptimalkan), algoritma mana yang sebaiknya dipilih agar proses pengurutan di komputer selesai dengan jumlah operasi paling sedikit? Berikan alasan logisnya!",
+            "kunci": "Algoritma yang sebaiknya dipilih adalah Insertion Sort. Alasannya: pada data yang hampir terurut, Insertion Sort hanya membandingkan setiap elemen dengan elemen di sebelah kirinya dan langsung berhenti bergeser ketika menemukan elemen yang lebih kecil, sehingga total perbandingannya mendekati O(n). Sebaliknya, Selection Sort tetap harus memindai seluruh sisa elemen yang belum terurut pada setiap lintasan tanpa memedulikan apakah data sudah hampir terurut atau belum (selalu O(n^2) perbandingan)."
+          },
+          {
+            "nomor": 4,
+            "level": "C3 (Menerapkan)",
+            "soal": "Sebuah struktur data Stack kosong menerima rangkaian perintah berikut secara berurutan: PUSH(A), PUSH(B), POP(), PUSH(C), PUSH(D), POP(), POP(), PUSH(E). Tentukan isi akhir Stack dari dasar (bottom) ke puncak (top) serta sebutkan elemen apa saja yang telah dikeluarkan!",
+            "kunci": "Penelusuran langkah:\n1. PUSH(A) -> [A]\n2. PUSH(B) -> [A, B]\n3. POP() -> mengeluarkan B, sisa [A]\n4. PUSH(C) -> [A, C]\n5. PUSH(D) -> [A, C, D]\n6. POP() -> mengeluarkan D, sisa [A, C]\n7. POP() -> mengeluarkan C, sisa [A]\n8. PUSH(E) -> [A, E]\nIsi akhir Stack dari dasar ke puncak: A, E (dengan E sebagai top). Elemen yang dikeluarkan secara berurutan adalah: B, D, dan C."
+          },
+          {
+            "nomor": 5,
+            "level": "C4 (Menganalisis)",
+            "soal": "Di ruang layanan fotokopi koperasi madrasah, dokumen tugas yang dikirim santri dicetak berdasarkan urutan waktu pengiriman masuk ke komputer server. Namun, ketika terjadi kesalahan pengetikan pada aplikasi pengolah kata, santri menekan tombol Undo beberapa kali untuk mengembalikan teks sebelumnya. Analisislah struktur data apa yang tepat untuk memodelkan kedua proses tersebut dan jelaskan dampak jika struktur datanya tertukar!",
+            "kunci": "1) Antrean cetak dokumen di koperasi tepat dimodelkan dengan Queue (FIFO - First-In First-Out) karena dokumen yang dikirim paling awal harus dicetak lebih dulu demi keadilan layanan. 2) Fitur Undo pada pengolah kata tepat dimodelkan dengan Stack (LIFO - Last-In First-Out) karena aksi perubahan terakhir adalah yang paling pertama harus dibatalkan.\nDampak jika tertukar: Jika mesin cetak memakai Stack, dokumen santri yang pertama mengirim akan tercetak paling terakhir (atau tidak pernah tercetak jika terus ada kiriman baru). Jika fitur Undo memakai Queue, menekan Undo justru akan menghapus ketikan awal dokumen, bukan kesalahan ketik terakhir."
+          }
+        ]
+      },
+      "lkpd": {
+        "judul": "LKPD Team-Based Learning: Tantangan Algoritma Efisien di Lingkungan Asrama",
+        "alokasi": "3 × 45 menit (Pertemuan 1–3)",
+        "petunjuk": [
+          "Duduklah bersama anggota tim permanen TBL kalian di klaster PC laboratorium komputer yang telah ditentukan.",
+          "Pastikan setiap anggota tim memahami perannya (Koordinator Waktu, Operator PC/Spreadsheet, Pencatat Hasil Tracing, dan Juru Bicara Pleno) serta bergantian mengoperasikan komputer.",
+          "Kerjakan setiap aktivitas melalui musyawarah tim setelah menyelesaikan tahapan iRAT dan tRAT pada setiap pertemuan.",
+          "Simpan file lembar kerja praktik kalian di folder tim pada komputer lab dengan format nama: KelasX_Tim[Nomor]_Bab1BK."
+        ],
+        "tujuan": [
+          "Menerapkan empat pilar berpikir komputasional untuk membandingkan efisiensi algoritma pencarian linear dan biner menggunakan perangkat lunak spreadsheet.",
+          "Menelusuri langkah kerja dan menghitung jumlah operasi perbandingan serta pertukaran pada algoritma Bubble Sort, Selection Sort, dan Insertion Sort.",
+          "Memodelkan sistem layanan dan alur pemrosesan data nyata menggunakan operasi dasar struktur data Stack dan Queue."
+        ],
+        "aktivitas": [
+          {
+            "nomor": 1,
+            "judul": "Aktivitas 1 (Pertemuan 1): Simulasi Efisiensi Pencarian Data Santri",
+            "pengantar": "Pengurus asrama memiliki daftar 32 nomor kamar dan nama santri. Kalian diminta menguji berapa banyak langkah pemeriksaan yang dibutuhkan untuk menemukan nama santri tertentu jika daftar masih acak (Linear Search) dibandingkan jika daftar sudah diurutkan abjad (Binary Search).",
+            "langkah": [
+              "Buka file dataset 'Data_Santri_X.xlsx' pada komputer lab kalian.",
+              "Pada Sheet 1 (Data Acak), lakukan simulasi pencarian manual/rumus berurutan dari baris pertama untuk menemukan 3 target nama berikut: santri pada baris ke-1, baris ke-17, dan nama yang tidak ada dalam daftar.",
+              "Pada Sheet 2 (Data Terurut Abjad), terapkan aturan Binary Search (selalu cek elemen tengah/median, lalu eliminasi separuh daftar) untuk mencari 3 target nama yang sama.",
+              "Catat jumlah langkah perbandingan yang terjadi pada tabel hasil pengamatan di bawah ini."
+            ],
+            "tabel": {
+              "kolom": ["Skenario Target Pencarian", "Jumlah Langkah Linear Search", "Jumlah Langkah Binary Search", "Algoritma Lebih Efisien"],
+              "baris": [
+                ["Target berada di posisi awal daftar", "", "", ""],
+                ["Target berada di bagian tengah daftar", "", "", ""],
+                ["Target tidak ditemukan dalam daftar", "", "", ""]
+              ]
+            },
+            "pertanyaan": [
+              "Mengapa Binary Search tidak dapat langsung diterapkan pada Sheet 1 yang datanya masih acak?",
+              "Bagaimana penerapan prinsip abstraksi dan pengenalan pola saat tim kalian menentukan indeks tengah pada Binary Search?"
+            ]
+          },
+          {
+            "nomor": 2,
+            "judul": "Aktivitas 2 (Pertemuan 2): Adu Efisiensi Algoritma Pengurutan (Sorting)",
+            "pengantar": "Terdapat tiga kelompok data skor kedisiplinan kamar asrama masing-masing berisi 6 angka: Kondisi A (Acak: [78, 65, 92, 70, 85, 60]), Kondisi B (Hampir Terurut: [60, 65, 75, 70, 85, 92]), dan Kondisi C (Terurut Terbalik: [92, 85, 78, 70, 65, 60]).",
+            "langkah": [
+              "Gunakan simulator sorting dan tabel penelusuran di spreadsheet PC lab untuk mengurutkan ketiga kondisi data tersebut secara menaik (ascending).",
+              "Uji masing-masing kondisi menggunakan Bubble Sort, Selection Sort, dan Insertion Sort.",
+              "Hitung secara cermat total jumlah perbandingan (comparisons) dan jumlah pertukaran/pergeseran (swaps/shifts) hingga seluruh data terurut.",
+              "Isikan hasil pengujian tim kalian pada tabel di bawah ini."
+            ],
+            "tabel": {
+              "kolom": ["Kondisi Dataset", "Algoritma Sorting", "Total Perbandingan", "Total Pertukaran/Pergeseran"],
+              "baris": [
+                ["Kondisi A (Acak)", "Bubble Sort", "", ""],
+                ["Kondisi A (Acak)", "Selection Sort", "", ""],
+                ["Kondisi A (Acak)", "Insertion Sort", "", ""],
+                ["Kondisi B (Hampir Terurut)", "Insertion Sort", "", ""],
+                ["Kondisi C (Terurut Terbalik)", "Selection Sort", "", ""]
+              ]
+            },
+            "pertanyaan": [
+              "Berdasarkan tabel pengujian di atas, algoritma mana yang melakukan pertukaran elemen paling sedikit pada Kondisi C (Terurut Terbalik)? Jelaskan alasannya!",
+              "Jika data baru yang masuk ke sistem asrama hampir selalu sudah terurut, algoritma mana yang direkomendasikan tim kalian?"
+            ]
+          },
+          {
+            "nomor": 3,
+            "judul": "Aktivitas 3 (Pertemuan 3): Pemodelan Layanan UKS Asrama dengan Stack dan Queue",
+            "pengantar": "Unit Kesehatan Santri (UKS) mencatat kedatangan santri yang periksa menggunakan sistem antrean normal (Queue), sedangkan rak penyimpanan kotak obat darurat disusun bertumpuk vertikal di dalam lemari sempit sehingga kotak yang terakhir diletakkan harus diambil lebih dulu (Stack).",
+            "langkah": [
+              "Buatlah dua kolom simulasi pada aplikasi spreadsheet di komputer lab: Kolom Antrean_UKS (Queue) dan Kolom Tumpukan_Obat (Stack).",
+              "Eksekusi urutan kejadian berikut secara bertahap dari langkah 1 hingga langkah 6 dan catat kondisi isi struktur data pada setiap langkah.",
+              "Pastikan tim kalian menerapkan aturan FIFO untuk Queue dan LIFO untuk Stack."
+            ],
+            "tabel": {
+              "kolom": ["Langkah", "Kejadian / Operasi", "Isi Queue (Depan -> Belakang)", "Isi Stack (Bawah -> Atas)"],
+              "baris": [
+                ["1", "ENQUEUE(Ahmad), ENQUEUE(Budi), PUSH(Kotak_P3K)", "", ""],
+                ["2", "ENQUEUE(Citra), PUSH(Kotak_Demam)", "", ""],
+                ["3", "DEQUEUE() [1 santri dipanggil periksa]", "", ""],
+                ["4", "PUSH(Kotak_Luka), POP() [1 kotak obat diambil]", "", ""],
+                ["5", "ENQUEUE(Dani), DEQUEUE()", "", ""],
+                ["6", "POP() [1 kotak obat diambil lagi]", "", ""]
+              ]
+            },
+            "pertanyaan": [
+              "Siapakah santri yang berada di posisi paling depan antrean setelah langkah ke-6 selesai?",
+              "Kotak obat manakah yang tersisa di dalam lemari setelah langkah ke-6? Jelaskan bagaimana prinsip LIFO bekerja pada kasus tersebut!"
+            ]
+          }
+        ],
+        "refleksi": [
+          "Konsep berpikir komputasional manakah (dekomposisi, pola, abstraksi, atau algoritma) yang paling membantu tim kalian saat memecahkan studi kasus di laboratorium komputer? Mengapa?",
+          "Bagaimana dinamika diskusi saat fase tRAT (Team Readiness Assurance Test) membantu kalian meluruskan pemahaman konsep yang sebelumnya keliru saat mengerjakan tes individu (iRAT)?",
+          "Contoh masalah nyata apa di lingkungan asrama MA Syubbanul Wathon yang dapat kalian selesaikan menggunakan kombinasi algoritma pengurutan atau struktur data Stack/Queue?"
+        ],
+        "penilaian_diri": [
+          "Saya membaca dan mempelajari bahan persiapan materi sebelum pembelajaran Team-Based Learning dimulai.",
+          "Saya mampu menjelaskan perbedaan cara kerja serta efisiensi antara pencarian linear dan pencarian biner.",
+          "Saya dapat menelusuri langkah pengurutan data (Bubble, Selection, Insertion Sort) serta operasi Stack dan Queue dengan teliti.",
+          "Saya menghargai pendapat anggota tim, berdiskusi secara santun saat tRAT, dan menjaga ketertiban perangkat di laboratorium komputer."
+        ]
+      }
+    },
+    {
+      "tp_kode": ["E.2.1"],
+      "judul_topik": "Bab 2: Literasi Digital (Integrasi Aplikasi Perkantoran dan Pembuatan Konten Digital)",
+      "semester": 1,
+      "jp": 9,
+      "dpl": [3, 4, 5, 6],
+      "kbc": [2, 4, 5],
+      "identifikasi": {
+        "murid": "Peserta didik kelas X MA Reguler yang seluruhnya tinggal di lingkungan asrama pesantren, memiliki kebutuhan nyata dalam mendokumentasikan laporan kegiatan kepengurusan asrama maupun ekstrakurikuler, serta melaksanakan seluruh praktik integrasi aplikasi dan pembuatan konten digital di laboratorium komputer madrasah.",
+        "materi": "Integrasi konten antaraplikasi perkantoran (Word Processor, Spreadsheet, dan Presentation), teknik Object Linking and Embedding (OLE), Mail Merge untuk otomatisasi dokumen massal, penyajian grafik dinamis lintas aplikasi, serta perancangan konten publikasi digital yang komunikatif dan etis."
+      },
+      "integrasi_kbc": [
+        {
+          "kode": 2,
+          "teks": "Cinta Ilmu: Mengembangkan kecakapan literasi digital dan ketelitian dalam mengolah data serta menyajikan informasi berbasis bukti secara akurat dan sistematis."
+        },
+        {
+          "kode": 4,
+          "teks": "Cinta Sesama: Membangun kolaborasi yang harmonis, pembagian peran yang adil, dan komunikasi yang santun dalam tim saat merancang serta mempresentasikan proyek digital."
+        },
+        {
+          "kode": 5,
+          "teks": "Cinta Tanah Air dan Lingkungan: Mengoptimalkan dokumentasi dan publikasi digital yang ramah lingkungan (paperless) untuk mendukung tata kelola kegiatan asrama dan madrasah."
+        }
+      ],
+      "pengantar_tp": "Melalui pembelajaran berbasis proyek (Project-Based Learning) dan praktik terpadu di laboratorium komputer, murid mampu:",
+      "model": "pjbl",
+      "model_nama": "Project-Based Learning (PjBL)",
+      "desain": {
+        "lintas_disiplin": "Bahasa Indonesia (penyusunan tata bahasa laporan formal dan infografis komunikatif) serta Keterampilan Organisasi Pesantren (administrasi kegiatan santri dan pelaporan program asrama).",
+        "topik": "Proyek Sistem Pelaporan dan Publikasi Terpadu Kegiatan Asrama Berbasis Integrasi Aplikasi Perkantoran",
+        "praktik_pedagogis": "Menerapkan model Project-Based Learning (PjBL) dalam 3 pertemuan (total 9 JP, masing-masing 3 JP) yang mencakup 6 sintaks lengkap: (1) Penentuan Pertanyaan Mendasar, (2) Mendesain Perencanaan Proyek, (3) Menyusun Jadwal Pembuatan, (4) Memonitor Keaktifan dan Perkembangan Proyek, (5) Menguji Hasil, dan (6) Evaluasi Pengalaman Belajar yang terintegrasi dengan prinsip Pembelajaran Mendalam (Memahami, Mengaplikasi, Merefleksi).",
+        "kemitraan": "Pengurus Organisasi Santri / Koordinator Kamar Asrama (sebagai penyedia studi kasus data kegiatan) serta laboran komputer MA Syubbanul Wathon.",
+        "lingkungan": "Laboratorium komputer MA Syubbanul Wathon dengan konfigurasi perangkat lunak perkantoran lengkap (pengolah kata, pengolah lembar kerja, pengolah presentasi, dan editor grafis/publikasi) serta jaringan lokal untuk berbagi berkas proyek.",
+        "digital": "Perangkat lunak pengolah kata (LibreOffice Writer / Microsoft Word), pengolah lembar kerja (LibreOffice Calc / Microsoft Excel), aplikasi presentasi (LibreOffice Impress / Microsoft PowerPoint), serta perkakas desain konten digital."
+      },
+      "pertemuan": [
+        {
+          "nomor": 1,
+          "jp": 3,
+          "judul": "Eksplorasi Integrasi Aplikasi Perkantoran dan Perencanaan Proyek Digital",
+          "awal": [
+            {
+              "sintaks": "Fase 1 – Penentuan Pertanyaan Mendasar (Start with the Essential Question)",
+              "teks": "Guru membuka pembelajaran dengan salam, doa bersama, dan mengecek kesiapan komputer di laboratorium. Guru menampilkan dua contoh laporan kegiatan asrama: laporan manual yang tidak sinkron datanya dan laporan digital terpadu. Guru mengajukan pertanyaan pemantik mendasar: 'Bagaimana cara merancang sistem laporan dan publikasi kegiatan asrama yang datanya saling terhubung otomatis antaraplikasi sehingga minim kesalahan dan hemat kertas?'"
+            }
+          ],
+          "memahami": [
+            {
+              "sintaks": "Fase 2 – Mendesain Perencanaan Proyek (Design a Plan for the Project)",
+              "teks": "Murid membentuk kelompok proyek (3–4 orang) di klaster PC lab komputer, lalu mengeksplorasi konsep integrasi antaraplikasi perkantoran (Cut/Copy-Paste khusus, Object Linking and Embedding/OLE, Mail Merge, serta konversi laporan menjadi konten presentasi dan poster digital). Setiap kelompok menyusun proposal mini rencana proyek 'Paket Pelaporan & Publikasi Terpadu Kegiatan Asrama' beserta pembagian peran tim pada LKPD Proyek Bagian 1."
+            }
+          ],
+          "mengaplikasi": [
+            {
+              "sintaks": "Fase 3 – Menyusun Jadwal Pembuatan (Create a Schedule)",
+              "teks": "Bersama guru, setiap kelompok menyusun linimasa (timeline) pengerjaan proyek dari Pertemuan 1 hingga Pertemuan 3 menggunakan tabel jadwal pada aplikasi spreadsheet, menetapkan target capaian (milestone) di setiap sesi lab komputer, serta menyiapkan struktur folder proyek dan basis data mentah (dataset peserta, anggaran, dan skor lomba asrama)."
+            }
+          ],
+          "merefleksi": [
+            {
+              "sintaks": "Refleksi Awal Perencanaan dan Tinjauan Kelayakan Rancangan",
+              "teks": "Perwakilan dua kelompok memaparkan rancangan arsitektur integrasi dokumen dan jadwal kerja mereka untuk mendapat umpan balik dari rekan sejawat dan guru mengenai kelayakan teknis serta ketepatan sasaran konten."
+            }
+          ],
+          "penutup": [
+            {
+              "sintaks": "Penguatan Konsep Integrasi dan Penutup Sesi 1",
+              "teks": "Guru menegaskan prinsip kerja integrasi data (single source of truth), memastikan seluruh file rancangan awal tersimpan aman di komputer lab, dan menutup pertemuan dengan doa."
+            }
+          ]
+        },
+        {
+          "nomor": 2,
+          "jp": 3,
+          "judul": "Produksi Proyek Integrasi Dokumen (OLE, Mail Merge) dan Konten Digital",
+          "awal": [
+            {
+              "sintaks": "Apersepsi dan Peninjauan Target Linimasa Proyek",
+              "teks": "Guru menyapa murid di lab komputer, memverifikasi kesiapan file basis data dari pertemuan pertama, serta mengingatkan kembali standar kualitas integrasi dinamis (tautan grafik/tabel aktif dan otomatisasi surat/sertifikat)."
+            }
+          ],
+          "memahami": [
+            {
+              "sintaks": "Demonstrasi Teknis Terarah (Scaffolding Fitur Lanjutan)",
+              "teks": "Guru mendemonstrasikan secara singkat mekanisme pembaruan otomatis (Auto-Update Link) antara grafik/tabel spreadsheet ke dokumen pengolah kata dan salindia presentasi, serta pengaturan field Mail Merge yang bersih dari galat pemformatan angka/tanggal."
+            }
+          ],
+          "mengaplikasi": [
+            {
+              "sintaks": "Fase 4 – Memonitor Keaktifan dan Perkembangan Proyek (Monitor the Students and Progress)",
+              "teks": "Kelompok murid memproduksi tiga luaran terintegrasi di PC lab komputer: (1) Basis data & rekap statistik di Spreadsheet, (2) Laporan kegiatan & surat/piagam otomatis berbasis Mail Merge di Pengolah Kata dengan tabel/grafik tertaut (OLE), serta (3) Salindia presentasi dan poster publikasi digital yang ringkas. Guru berkeliling memonitor keaktifan tiap anggota, memeriksa tautan data, dan mengisi lembar kemajuan proyek (LKPD Proyek Bagian 2)."
+            }
+          ],
+          "merefleksi": [
+            {
+              "sintaks": "Uji Coba Perubahan Data dan Refleksi Kendala Teknis",
+              "teks": "Setiap kelompok menguji ketahanan integrasi dokumen mereka dengan mengubah salah satu nilai pada file spreadsheet utama dan memverifikasi apakah tabel/grafik pada dokumen laporan ikut terbarui, lalu mencatat kendala dan solusi teknis yang ditemukan."
+            }
+          ],
+          "penutup": [
+            {
+              "sintaks": "Pencadangan Berkas Proyek dan Persiapan Gelar Karya",
+              "teks": "Guru membimbing murid melakukan pengemasan folder proyek (bundling file sumber dan file tertaut agar tidak broken link) sebagai persiapan uji hasil pada pertemuan berikutnya, lalu menutup pembelajaran dengan doa."
+            }
+          ]
+        },
+        {
+          "nomor": 3,
+          "jp": 3,
+          "judul": "Uji Hasil Proyek, Presentasi Publikasi Digital, dan Evaluasi Pengalaman Belajar",
+          "awal": [
+            {
+              "sintaks": "Pengkondisian Gelar Karya Digital di Laboratorium Komputer",
+              "teks": "Guru membuka pertemuan dengan salam dan doa, menjelaskan rubrik pengujian produk dan presentasi, serta menginstruksikan setiap kelompok membuka seluruh berkas proyek terintegrasi di PC masing-masing."
+            }
+          ],
+          "memahami": [
+            {
+              "sintaks": "Validasi Kesiapan Tautan Data dan Etika Konten Digital",
+              "teks": "Kelompok melakukan pemeriksaan akhir (self-checklist) terhadap keakuratan data, kebebasan dari tautan rusak (broken link), tata letak visual, serta penerapan etika literasi digital (pencantuman sumber dan perlindungan privasi data santri)."
+            }
+          ],
+          "mengaplikasi": [
+            {
+              "sintaks": "Fase 5 – Menguji Hasil (Assess the Outcome)",
+              "teks": "Setiap kelompok mempresentasikan paket laporan terintegrasi dan konten publikasi digital mereka menggunakan salindia presentasi yang tertaut dengan data nyata. Guru dan kelompok penguji melakukan pengujian langsung (live testing) dengan meminta penyaji mengubah satu data sumber pada spreadsheet untuk membuktikan sinkronisasi otomatis pada laporan dan presentasi (LKPD Proyek Bagian 3)."
+            }
+          ],
+          "merefleksi": [
+            {
+              "sintaks": "Fase 6 – Evaluasi Pengalaman Belajar (Evaluate the Experience)",
+              "teks": "Guru memfasilitasi diskusi reflektif kelas mengenai pengalaman merancang proyek dari nol hingga siap dipublikasikan, efisiensi kerja tim, serta manfaat integrasi aplikasi perkantoran untuk mendukung budaya administrasi modern dan ramah lingkungan di asrama."
+            }
+          ],
+          "penutup": [
+            {
+              "sintaks": "Apresiasi Karya Terbaik, Penguatan Akhir Bab 2, dan Penutup",
+              "teks": "Guru memberikan umpan balik menyeluruh dan apresiasi kepada kelompok dengan integrasi paling stabil serta desain konten paling komunikatif, menginformasikan asesmen sumatif Bab 2, dan menutup pertemuan dengan doa."
+            }
+          ]
+        }
+      ],
+      "asesmen": {
+        "diagnostik": [
+          {
+            "pertanyaan": "Ketika kamu diminta memasukkan tabel dan grafik dari aplikasi pengolah lembar kerja (Excel/Calc) ke dalam laporan di pengolah kata (Word/Writer), cara apa yang biasa kamu lakukan dan apa yang terjadi jika angka di tabel aslinya berubah?",
+            "indikator": "Mengidentifikasi pemahaman awal murid tentang perbedaan menyalin objek secara statis (Copy-Paste biasa) dan menautkan objek secara dinamis (Object Linking).",
+            "tindak_lanjut": "Murid yang masih menggunakan metode salin-tempel statis atau tangkapan layar (screenshot) diberikan demonstrasi langsung fitur Paste Special > Paste Link pada awal Pertemuan 2."
+          },
+          {
+            "pertanyaan": "Jika pengurus asrama harus mencetak 150 piagam penghargaan santri dengan nama dan nomor kamar yang berbeda-beda, bagaimana cara tercepat membuatnya di komputer tanpa mengetik satu per satu?",
+            "indikator": "Mengukur pengetahuan awal murid mengenai konsep otomatisasi dokumen massal (Mail Merge) berbasis sumber data tabel.",
+            "tindak_lanjut": "Jawaban murid digunakan untuk memetakan anggota kelompok yang sudah mengenal Mail Merge agar menjadi tutor sebaya bagi anggota lain dalam tim proyek."
+          },
+          {
+            "pertanyaan": "Apa saja hal yang harus diperhatikan sebelum memublikasikan poster atau laporan kegiatan asrama yang memuat nama dan foto santri ke media digital?",
+            "indikator": "Memetakan kesadaran awal murid terhadap etika digital, hak cipta aset visual, dan perlindungan data pribadi.",
+            "tindak_lanjut": "Guru menekankan aturan penyamaran data sensitif (seperti nomor telepon atau alamat lengkap) dalam rubrik penilaian proyek Bab 2."
+          }
+        ],
+        "sikap": [
+          {
+            "aspek": "Cinta Ilmu (Ketelitian Teknis dan Kredibilitas Penyajian Data)",
+            "skor_4": "Sangat teliti memastikan seluruh tautan data antaraplikasi sinkron tanpa galat, memeriksa akurasi rumus/format Mail Merge, serta menyajikan informasi berbasis fakta yang valid.",
+            "skor_3": "Teliti menyusun integrasi dokumen sesuai panduan proyek dan memeriksa kesesuaian data antara spreadsheet dan laporan.",
+            "skor_2": "Menyelesaikan proyek integrasi aplikasi namun masih terdapat beberapa ketidaksesuaian format atau tautan yang kurang diperiksa ulang.",
+            "skor_1": "Cenderung terburu-buru menyalin data secara manual tanpa memperhatikan keakuratan maupun keterhubungan antaraplikasi."
+          },
+          {
+            "aspek": "Cinta Sesama (Kolaborasi Tim dan Komunikasi Santun)",
+            "skor_4": "Berbagi peran proyek secara adil, aktif membantu rekan tim yang mengalami kendala teknis di PC, serta mempresentasikan hasil karya dan memberi masukan dengan bahasa yang sangat santun.",
+            "skor_3": "Bekerja sama dengan baik sesuai pembagian tugas kelompok dan menghargai masukan dari guru maupun teman saat gelar karya.",
+            "skor_2": "Menjalankan tugas bagiannya sendiri namun kurang berkoordinasi saat menggabungkan berkas antaraplikasi milik anggota tim lain.",
+            "skor_1": "Kurang berkontribusi dalam pengerjaan proyek kelompok dan pasif selama sesi diskusi maupun presentasi."
+          },
+          {
+            "aspek": "Cinta Tanah Air dan Lingkungan (Budaya Kerja Paperless & Etika Digital)",
+            "skor_4": "Mengoptimalkan alur kerja digital tanpa pemborosan kertas, menjaga kerapian perangkat lab komputer, serta mematuhi etika hak cipta dan privasi data dalam konten publikasi.",
+            "skor_3": "Menerapkan penyajian dokumen digital yang rapi, mematuhi etika penggunaan sumber gambar/data, dan menjaga ketertiban komputer lab.",
+            "skor_2": "Mematuhi tata tertib lab komputer namun perlu diingatkan untuk mencantumkan atribusi sumber atau menjaga privasi data dalam konten.",
+            "skor_1": "Mengabaikan prinsip etika digital dan kurang menjaga kerapian folder maupun perangkat PC setelah praktik."
+          }
+        ],
+        "kinerja": [
+          {
+            "aspek": "Kualitas Integrasi Dinamis Antaraplikasi (OLE & Live Sync)",
+            "skor": [
+              "Seluruh tabel dan grafik di dokumen pengolah kata dan salindia presentasi tertaut dinamis ke spreadsheet; saat data sumber diubah pada uji langsung, seluruh dokumen langsung terbarui akurat tanpa broken link.",
+              "Sebagian besar tabel dan grafik tertaut dinamis ke spreadsheet dan berhasil diperbarui saat uji langsung, dengan sedikit penyesuaian tata letak.",
+              "Objek tabel/grafik berhasil dimasukkan ke laporan dan presentasi namun masih bersifat statis (tidak otomatis berubah saat data sumber dimodifikasi).",
+              "Dokumen antaraplikasi terpisah tanpa integrasi data yang benar atau mengalami galat tautan rusak seluruhnya."
+            ]
+          },
+          {
+            "aspek": "Penerapan Otomatisasi Dokumen (Mail Merge)",
+            "skor": [
+              "Mampu menghubungkan dokumen utama dengan basis data spreadsheet secara tepat, seluruh field Mail Merge (nama, kamar, predikat/nilai) terformat rapi dan menghasilkan dokumen massal bebas galat.",
+              "Mampu menjalankan Mail Merge dengan hasil seluruh record terbaca benar, meski masih terdapat sedikit kekurangan pada pemformatan angka atau spasi.",
+              "Koneksi sumber data Mail Merge berhasil dibuat namun hanya sebagian field yang muncul dengan tepat pada dokumen keluaran.",
+              "Belum mampu menghubungkan basis data spreadsheet dengan dokumen pengolah kata menggunakan fitur Mail Merge."
+            ]
+          },
+          {
+            "aspek": "Desain Konten Digital, Tata Bahasa, dan Etika Publikasi",
+            "skor": [
+              "Laporan, salindia presentasi, dan poster publikasi memiliki hierarki visual yang sangat menarik, bahasa Indonesia baku dan komunikatif, bebas pelanggaran hak cipta, serta melindungi privasi data.",
+              "Konten digital disajikan rapi, mudah dipahami, menggunakan bahasa yang baik, serta memenuhi aspek etika publikasi digital.",
+              "Informasi utama tersampaikan dalam konten digital namun tata letak visual terlalu padat teks atau kurang konsisten antarhalaman.",
+              "Tampilan konten digital tidak terstruktur, sulit dibaca, dan mengabaikan kaidah penyajian informasi yang etis."
+            ]
+          }
+        ],
+        "sumatif": [
+          {
+            "nomor": 1,
+            "level": "C4 (Menganalisis)",
+            "soal": "Seorang sekretaris organisasi santri menyusun laporan keuangan kegiatan asrama di Microsoft Word dengan cara mengambil tangkapan layar (screenshot) tabel dan grafik dari Microsoft Excel lalu menempelkannya ke Word. Dua jam sebelum rapat, ditemukan kesalahan input pengeluaran pada file Excel tersebut. Analisislah kelemahan metode yang digunakan sekretaris tersebut dan jelaskan solusi integrasi aplikasi perkantoran yang tepat agar masalah serupa tidak terulang!",
+            "kunci": "Kelemahan metode screenshot: objek bersifat statis (berupa gambar mati), sehingga setiap kali ada revisi angka pada Excel, pengguna harus mengulang proses pemotretan layar, pemotongan gambar, dan penempelan ulang ke Word secara manual yang rawan terlewat serta menurunkan ketajaman visual.\nSolusi integrasi yang tepat: Menggunakan fitur Object Linking and Embedding (OLE) melalui menu Paste Special > Paste Link (atau Link & Keep Source Formatting). Dengan menautkan tabel/grafik secara dinamis, perubahan angka pada file Excel sumber akan otomatis memperbarui tampilan tabel dan grafik di dokumen Word."
+          },
+          {
+            "nomor": 2,
+            "level": "C3 (Menerapkan)",
+            "soal": "Panitia Musabaqah Tilawatil Qur'an (MTQ) antar-kamar asrama memiliki file spreadsheet 'Daftar_Juara.xlsx' yang berisi kolom: Nama_Santri, Asal_Kamar, Cabang_Lomba, dan Peringkat. Jelaskan secara runtut langkah-langkah yang harus dilakukan pada aplikasi pengolah kata untuk mencetak 80 piagam penghargaan secara otomatis menggunakan fitur Mail Merge!",
+            "kunci": "Langkah-langkah Mail Merge:\n1. Menyiapkan dokumen master desain piagam pada aplikasi pengolah kata (Word/Writer) dan mengosongkan bagian isian dinamis.\n2. Membuka tab Mailings > Start Mail Merge (pilih Letters/Normal Word Document).\n3. Menghubungkan sumber data melalui Select Recipients > Use an Existing List, lalu memilih file 'Daftar_Juara.xlsx' dan menentukan sheet yang sesuai.\n4. Menyisipkan penanda kolom (Insert Merge Field) untuk <<Nama_Santri>>, <<Asal_Kamar>>, <<Cabang_Lomba>>, dan <<Peringkat>> pada posisi yang sesuai di desain piagam serta mengatur jenis/ukuran hurufnya.\n5. Memeriksa hasil sementara menggunakan Preview Results untuk memastikan tidak ada data terpotong.\n6. Menyelesaikan penggabungan melalui Finish & Merge > Edit Individual Documents atau Print Documents untuk menghasilkan seluruh 80 piagam."
+          },
+          {
+            "nomor": 3,
+            "level": "C4 (Menganalisis)",
+            "soal": "Ketika sebuah tim memindahkan folder proyek yang berisi file laporan utama (.docx) dan file data sumber (.xlsx) dari komputer laboratorium ke komputer ruang rapat menggunakan flashdisk, muncul pesan galat bahwa tautan grafik tidak ditemukan (broken link). Analisislah penyebab teknis terjadinya hal tersebut dan bagaimana strategi pengorganisasian berkas yang benar sebelum memindahkan proyek terintegrasi!",
+            "kunci": "Penyebab teknis: Fitur Object Linking menyimpan alamat jalur direktori (file path) absolut dari komputer asal (misalnya C:\\Users\\Lab01\\Documents\\Data.xlsx). Ketika file dipindahkan ke komputer lain dengan struktur folder atau nama drive berbeda, aplikasi pengolah kata gagal menemukan lokasi file sumber tersebut.\nStrategi yang benar: (1) Menyimpan seluruh file sumber (.xlsx) dan file tujuan (.docx/.pptx) dalam satu folder proyek yang sama sejak awal pembuatan; (2) Memeriksa dan memperbarui jalur tautan melalui menu Edit Links to Files (Update Now / Change Source) setelah folder dipindahkan ke komputer tujuan; atau (3) Menyematkan objek (Embed) apabila dokumen sudah final dan tidak lagi memerlukan pembaruan data dari komputer asal."
+          },
+          {
+            "nomor": 4,
+            "level": "C5 (Mengevaluasi)",
+            "soal": "Sebuah kelompok membuat salindia presentasi hasil survei kebersihan asrama dengan menyalin seluruh paragraf narasi laporan (15 baris teks per slide) dari pengolah kata ke dalam PowerPoint tanpa grafik pendukung. Evaluasilah efektivitas konten digital tersebut dari sudut pandang prinsip desain presentasi dan integrasi aplikasi, lalu berikan rekomendasi perbaikannya!",
+            "kunci": "Evaluasi: Penyajian 15 baris teks penuh pada satu salindia sangat tidak efektif karena melanggar prinsip visualisasi presentasi (audiens akan sibuk membaca teks panjang alih-alih menyimak penyaji) dan gagal memanfaatkan kekuatan integrasi aplikasi.\nRekomendasi perbaikan: (1) Meringkas narasi laporan menjadi poin-poin kunci maksimal 3–5 butir singkat per salindia; (2) Mengintegrasikan grafik perbandingan skor kebersihan antar-kamar secara tertaut (Paste Link) dari aplikasi spreadsheet agar tren data terlihat secara visual; serta (3) Menggunakan tata letak yang kontras dan hierarki ukuran huruf yang jelas."
+          },
+          {
+            "nomor": 5,
+            "level": "C4 (Menganalisis)",
+            "soal": "Dalam membuat infografis digital tentang rekap kesehatan dan prestasi santri yang akan dipublikasikan di mading digital madrasah, kelompokmu menggunakan foto ilustrasi dari internet dan tabel data yang memuat NIK serta nomor telepon orang tua santri. Identifikasilah dua pelanggaran etika literasi digital dalam rancangan tersebut dan tentukan langkah perbaikannya!",
+            "kunci": "Dua pelanggaran etika literasi digital:\n1) Pelanggaran privasi dan perlindungan data pribadi: Menampilkan informasi sensitif berupa NIK dan nomor telepon orang tua santri pada media publikasi terbuka yang berisiko disalahgunakan.\n2) Potensi pelanggaran hak cipta (copyright): Mengambil gambar dari internet tanpa memeriksa lisensi penggunaan atau tanpa mencantumkan atribusi sumber pembuatnya.\nLangkah perbaikan: Menghapus atau menyamarkan (anonimisasi) kolom NIK dan nomor telepon sehingga hanya menampilkan data agregat atau nama/kamar yang diizinkan, serta mengganti ilustrasi dengan aset berlisensi bebas (Creative Commons / domain publik) disertai pencantuman sumber secara etis."
+          }
+        ]
+      },
+      "lkpd": {
+        "judul": "LKPD Proyek PjBL: Sistem Pelaporan dan Publikasi Terpadu Kegiatan Asrama",
+        "alokasi": "3 × 45 menit (Pertemuan 1–3)",
+        "petunjuk": [
+          "Bentuklah kelompok proyek beranggotakan 3–4 orang pada klaster komputer laboratorium yang telah ditetapkan.",
+          "Buatlah satu folder utama pada drive lokal PC dengan format nama: KelasX_Kelompok[Nomor]_ProyekBab2. Seluruh berkas proyek wajib disimpan di dalam satu folder ini agar tautan antaraplikasi tetap terjaga.",
+          "Bagilah peran anggota tim secara adil: Manajer Proyek & Pengolah Data (Spreadsheet), Spesialis Laporan & Otomatisasi (Word Processor & Mail Merge), serta Desainer Presentasi & Konten Publikasi (Presentation & Infografis).",
+          "Isilah setiap bagian tahapan proyek pada LKPD ini secara berurutan dari Pertemuan 1 hingga Pertemuan 3."
+        ],
+        "tujuan": [
+          "Merancang arsitektur integrasi dokumen lintas aplikasi perkantoran untuk menyelesaikan studi kasus administrasi kegiatan asrama.",
+          "Mengimplementasikan penautan tabel dan grafik dinamis (OLE) serta otomatisasi dokumen massal (Mail Merge) secara akurat.",
+          "Menghasilkan paket publikasi digital (salindia presentasi dan poster/infografis) yang komunikatif, estetis, dan mematuhi etika literasi digital."
+        ],
+        "aktivitas": [
+          {
+            "nomor": 1,
+            "judul": "Bagian 1 (Pertemuan 1): Perencanaan Proyek dan Jadwal Kerja Tim",
+            "pengantar": "Pilihlah salah satu studi kasus kegiatan di lingkungan MA Syubbanul Wathon berikut sebagai tema proyek kelompok kalian: (A) Rekapitulasi dan Publikasi Hasil Lomba Kebersihan & Kerapian Kamar Asrama, (B) Laporan Kegiatan Bakti Sosial & Penggalangan Dana Santri, atau (C) Rekapitulasi Partisipasi Ekstrakurikuler dan Sertifikat Prestasi Santri.",
+            "langkah": [
+              "Diskusikan studi kasus pilihan tim kalian dan rancanglah alur aliran data dari sumber mentah (Spreadsheet) menuju dokumen laporan/piagam (Word Processor) dan media publikasi (Presentation/Poster).",
+              "Tuliskan pembagian peran anggota tim serta daftar berkas yang akan dibuat pada tabel perencanaan di bawah ini.",
+              "Susunlah jadwal target penyelesaian proyek pada Pertemuan 1, 2, dan 3."
+            ],
+            "tabel": {
+              "kolom": ["Komponen Produk Proyek", "Aplikasi yang Digunakan", "Fitur Integrasi / Teknik Utama", "Penanggung Jawab"],
+              "baris": [
+                ["1. Basis Data & Rekap Statistik", "Pengolah Lembar Kerja (Excel/Calc)", "Fungsi agregasi (SUM, AVERAGE, IF) & Grafik", ""],
+                ["2. Laporan Resmi Kegiatan", "Pengolah Kata (Word/Writer)", "Object Linking (Paste Link) Tabel & Grafik", ""],
+                ["3. Surat Undangan / Piagam Massal", "Pengolah Kata + Lembar Kerja", "Mail Merge terhubung ke sheet peserta", ""],
+                ["4. Salindia & Poster Publikasi", "Presentasi (PPT/Impress)", "Grafik tertaut & desain visual etis", ""]
+              ]
+            },
+            "pertanyaan": [
+              "Mengapa basis data utama harus dikelola di aplikasi pengolah lembar kerja terlebih dahulu sebelum membuat laporan dan presentasi?",
+              "Data sensitif apa saja pada studi kasus pilihan tim kalian yang harus disamarkan/dilindungi sebelum dipublikasikan?"
+            ]
+          },
+          {
+            "nomor": 2,
+            "judul": "Bagian 2 (Pertemuan 2): Pengembangan Proyek & Uji Sinkronisasi Tautan",
+            "pengantar": "Pada tahap produksi ini, pastikan seluruh komponen berkas berada dalam satu folder yang sama dan terhubung secara dinamis (bukan sekadar salin-tempel statis atau screenshot).",
+            "langkah": [
+              "Input minimal 15 baris data realistis pada file Spreadsheet proyek kalian, lalu buatlah minimal 2 jenis grafik yang informatif.",
+              "Tautkan tabel rekap dan grafik dari Spreadsheet ke dalam dokumen Laporan di Pengolah Kata menggunakan fitur Paste Special > Paste Link.",
+              "Buatlah template surat/piagam pada file Pengolah Kata terpisah dan hubungkan dengan daftar penerima di Spreadsheet menggunakan Mail Merge.",
+              "Lakukan uji coba modifikasi data pada Spreadsheet dan catat hasil pemantauannya pada tabel di bawah ini."
+            ],
+            "tabel": {
+              "kolom": ["Jenis Uji Teknis Integrasi", "Langkah Pengujian yang Dilakukan", "Hasil Pengamatan (Berhasil / Kendala)", "Solusi Perbaikan"],
+              "baris": [
+                ["Uji Auto-Update Tabel di Laporan", "Mengubah salah satu nominal/skor pada file Spreadsheet sumber", "", ""],
+                ["Uji Auto-Update Grafik di Presentasi", "Menambah atau mengubah kategori nilai pada grafik sumber", "", ""],
+                ["Uji Keluaran Mail Merge", "Menjalankan Preview Results dari record ke-1 hingga ke-15", "", ""]
+              ]
+            },
+            "pertanyaan": [
+              "Kendala teknis apa yang muncul saat kalian menautkan grafik atau mengatur format angka pada Mail Merge, dan bagaimana tim mengatasinya?",
+              "Bagaimana cara tim kalian memastikan bahwa desain poster dan salindia presentasi tetap ringkas namun memuat inti informasi laporan?"
+            ]
+          },
+          {
+            "nomor": 3,
+            "judul": "Bagian 3 (Pertemuan 3): Uji Hasil Gelar Karya & Evaluasi Kelayakan Produk",
+            "pengantar": "Sebelum melakukan presentasi gelar karya di hadapan guru dan kelompok penguji, lakukan verifikasi akhir terhadap seluruh luaran proyek tim kalian.",
+            "langkah": [
+              "Periksa kelengkapan seluruh file di dalam folder proyek kelompok kalian.",
+              "Siapkan skenario perubahan data langsung (live demo) pada Spreadsheet saat tim penguji meminta pembuktian sinkronisasi otomatis.",
+              "Catat umpan balik dari guru dan kelompok penguji pada tabel evaluasi di bawah ini."
+            ],
+            "tabel": {
+              "kolom": ["Aspek Evaluasi Gelar Karya", "Status Kesiapan Tim (Lengkap/Perlu Revisi)", "Catatan Umpan Balik Penguji"],
+              "baris": [
+                ["Sinkronisasi Otomatis (Live Sync) Antaraplikasi", "", ""],
+                ["Ketepatan Hasil Dokumen Massal (Mail Merge)", "", ""],
+                ["Kualitas Visual Konten Digital & Tata Bahasa", "", ""],
+                ["Kepatuhan Etika Digital (Hak Cipta & Privasi Data)", "", ""]
+              ]
+            },
+            "pertanyaan": [
+              "Berdasarkan masukan saat uji hasil, bagian mana dari proyek tim kalian yang paling unggul dan bagian mana yang masih dapat ditingkatkan?",
+              "Bagaimana penerapan proyek integrasi dokumen ini dapat membantu efisiensi kerja pengurus asrama di MA Syubbanul Wathon?"
+            ]
+          }
+        ],
+        "refleksi": [
+          "Perbedaan efisiensi kerja apa yang paling terasa ketika kalian menggunakan fitur integrasi dinamis (OLE dan Mail Merge) dibandingkan menyusun dokumen secara manual satu per satu?",
+          "Tantangan kolaborasi apa yang dihadapi tim kalian selama 3 pertemuan PjBL di laboratorium komputer dan bagaimana cara tim menyelesaikannya?",
+          "Bagaimana komitmen kalian dalam menerapkan etika literasi digital dan budaya kerja hemat kertas (paperless) setelah menyelesaikan proyek Bab 2 ini?"
+        ],
+        "penilaian_diri": [
+          "Saya memahami perbedaan teknis antara menyalin objek secara statis (Copy-Paste) dan menautkan objek secara dinamis (Object Linking).",
+          "Saya mampu membuat basis data di spreadsheet dan menghubungkannya dengan dokumen pengolah kata menggunakan fitur Mail Merge tanpa galat.",
+          "Saya menyajikan konten publikasi digital dengan tata letak yang rapi, bahasa yang santun, serta menghormati hak cipta dan privasi data.",
+          "Saya berkontribusi aktif sesuai peran saya dalam kelompok dan menjaga kebersihan serta ketertiban komputer selama proyek berlangsung."
+        ]
+      }
+    }
+  ],
+  "riwayat_model": ["tbl", "pjbl"],
+  "tampilkan": ["modul"]
+};
+</script>
+<script src="../mesin/mesin-perangkat.js"></script>
+</head>
+<body><div id="app">Memuat mesin perangkat ajar…</div></body>
+</html>

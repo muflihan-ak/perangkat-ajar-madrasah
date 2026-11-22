@@ -6,7 +6,7 @@
  */
 (function () {
   'use strict';
-  var VERSI = '1.3.0';
+  var VERSI = '1.3.1';
   var REPO = 'muflihan-ak/perangkat-ajar-madrasah';
   var DATA_BASES = [
     'https://cdn.jsdelivr.net/gh/' + REPO + '@v' + VERSI + '/data/',
@@ -50,8 +50,21 @@
   P.pengaturan = P.pengaturan || {};
   P.tp = arr(P.tp);
   P.modul_ajar = arr(P.modul_ajar);
-  I.kelas = String(I.kelas || 'X').toUpperCase().replace(/\s/g, '');
-  I.fase = String(I.fase || (I.kelas === 'X' ? 'E' : 'F')).toUpperCase();
+  /* kelas & fase: kelas menjadi acuan; fase selalu diturunkan dari kelas */
+  var ROMAWI = { '1': 'I', '2': 'II', '3': 'III', '4': 'IV', '5': 'V', '6': 'VI', '7': 'VII', '8': 'VIII', '9': 'IX', '10': 'X', '11': 'XI', '12': 'XII' };
+  var FASE_KELAS = { 'I': 'A', 'II': 'A', 'III': 'B', 'IV': 'B', 'V': 'C', 'VI': 'C', 'VII': 'D', 'VIII': 'D', 'IX': 'D', 'X': 'E', 'XI': 'F', 'XII': 'F' };
+  function normKelas(v) {
+    var t = ' ' + String(v == null ? '' : v).toUpperCase().replace(/KELAS|KLS|[.,\/()_-]/g, ' ') + ' ';
+    var m = t.match(/\s(XII|XI|IX|X|VIII|VII|VI|IV|V|III|II|I)\s/) || t.match(/\s(1[0-2]|[1-9])\s/);
+    return m ? (ROMAWI[m[1]] || m[1]) : '';
+  }
+  var WARN_ID = [], kelasAsli = I.kelas != null ? I.kelas : (P.kelas != null ? P.kelas : I.kelas_fase);
+  I.kelas = normKelas(kelasAsli);
+  if (!I.kelas) { WARN_ID.push('Kelas tidak terbaca' + (kelasAsli ? ' ("' + kelasAsli + '")' : ' (kosong)') + '. Dokumen sementara memakai kelas X. Minta Gemini mengisi <b>identitas.kelas</b> dengan X, XI, atau XII.'); I.kelas = 'X'; }
+  var faseHitung = FASE_KELAS[I.kelas] || 'E', faseAsli = String(I.fase || '').toUpperCase().replace(/FASE|\s/g, '');
+  if (faseAsli && faseAsli !== faseHitung) WARN_ID.push('Fase tertulis <b>' + faseAsli + '</b>, padahal kelas ' + I.kelas + ' adalah <b>Fase ' + faseHitung + '</b>. Dokumen memakai Fase ' + faseHitung + '.');
+  I.fase = faseHitung;
+  arr(P.tp).forEach(function (t) { if (t && t.kelas != null) t.kelas = normKelas(t.kelas) || t.kelas; });
   I.program = (I.program || 'reguler').toLowerCase();
   I.kepala = I.kepala || {}; I.guru = I.guru || {};
   var KLS_AWAL = { 'I': 1, '1': 1, 'VII': 1, '7': 1, 'X': 1, '10': 1 };
@@ -622,7 +635,9 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
     });
     tampilkanAktif();
     el('kktp-in').value = P.pengaturan.kktp; el('jpm-in').value = jpMinggu();
-    var info = [];
+    var info = WARN_ID.map(function (w) { return '<span class="peringatan">' + w + '</span>'; });
+    var kodeLain = P.tp.filter(function (t) { var k = String(t.kode || '').toUpperCase().match(/^([A-F])[.\s]/); return k && k[1] !== I.fase; });
+    if (kodeLain.length) info.push('<span class="peringatan">' + kodeLain.length + ' dari ' + P.tp.length + ' kode TP berawalan fase lain (misalnya ' + esc(kodeLain[0].kode) + '), padahal dokumen ini Fase ' + I.fase + ' kelas ' + I.kelas + '. Kemungkinan data dari percakapan/kelas lain terbawa. Minta Gemini menyusun ulang TP dari CP Fase ' + I.fase + '.</span>');
     if (GAGAL.length) info.push('Sebagian data rujukan gagal dimuat (' + GAGAL.join(', ') + '). Periksa koneksi internet lalu muat ulang.');
     if (!cpMapel()) info.push('CP mapel "' + esc(I.mapel_id) + '" Fase ' + I.fase + ' tidak ditemukan.');
     var cpm = cpMapel(), elNama = cpm ? cpm.elemen.map(function (e) { return e.nama; }) : [];
