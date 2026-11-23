@@ -1,12 +1,12 @@
 /*!
- * Mesin Perangkat Ajar Madrasah v1.5.0
+ * Mesin Perangkat Ajar Madrasah v1.6.0
  * CP · TP · ATP · Prota · Prosem · KKTP · Modul Ajar (Pembelajaran Mendalam Berbasis Cinta)
  * Data: window.PERANGKAT (ditulis skill Gemini). Rujukan CP/JP/Kaldik: berkas .md di folder data/.
  * Repo: github.com/muflihan-ak/perangkat-ajar-madrasah
  */
 (function () {
   'use strict';
-  var VERSI = '1.5.0';
+  var VERSI = '1.6.0';
   var SRC_MESIN = (document.currentScript && document.currentScript.src) || '';
   var REPO = 'muflihan-ak/perangkat-ajar-madrasah';
   var DATA_BASES = [
@@ -154,7 +154,8 @@
   function loadAll() {
     var j = P.jenjang.toLowerCase();
     var cpFiles = j === 'ma' ? ['ma/cp-ma-umum-fase-' + I.fase.toLowerCase() + '.md', 'ma/cp-ma-pai-arab.md', 'ma/cp-ma-keagamaan.md'] :
-      j === 'mts' ? ['mts/cp-mts-umum-fase-' + I.fase.toLowerCase() + '.md', 'mts/cp-mts-pai-arab.md'] : [];
+      j === 'mts' ? ['mts/cp-mts-umum-fase-' + I.fase.toLowerCase() + '.md', 'mts/cp-mts-pai-arab.md'] :
+      j === 'mi' ? ['mi/cp-mi-umum-fase-' + I.fase.toLowerCase() + '.md', 'mi/cp-mi-pai-arab.md'] : [];
     var jobs = cpFiles.map(function (f) { return fetchText(f).then(function (t) { parseCP(t, CP); }).catch(function () { GAGAL.push(f); }); });
     jobs.push(fetchText(j + '/struktur-kurikulum-' + j + '.md').then(function (t) { STR = parseStruktur(t); }).catch(function () { GAGAL.push('struktur'); }));
     if (P.modul_ajar.length) jobs.push(fetchText('model-pedagogis.md').then(parseModel).catch(function () { GAGAL.push('model-pedagogis'); }));

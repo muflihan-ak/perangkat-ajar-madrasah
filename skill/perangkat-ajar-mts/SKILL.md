@@ -117,7 +117,7 @@ Gunakan label persis: **1** Cinta Allah dan Rasul-Nya, **2** Cinta Ilmu, **3** C
 <script>
 window.PERANGKAT = { /* DATA JSON DI SINI */ };
 </script>
-<script src="https://cdn.jsdelivr.net/gh/muflihan-ak/perangkat-ajar-madrasah@v1.5.0/mesin/mesin-perangkat.js"
+<script src="https://cdn.jsdelivr.net/gh/muflihan-ak/perangkat-ajar-madrasah@v1.6.0/mesin/mesin-perangkat.js"
   onerror="var s=document.createElement('script');s.src='https://muflihan-ak.github.io/perangkat-ajar-madrasah/mesin/mesin-perangkat.js';document.head.appendChild(s);"></script>
 </head>
 <body><div id="app">Memuat mesin perangkat ajar…</div></body>
