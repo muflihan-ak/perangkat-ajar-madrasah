@@ -117,10 +117,12 @@ Gunakan label persis: **1** Cinta Allah dan Rasul-Nya, **2** Cinta Ilmu, **3** C
 <script>
 window.PERANGKAT = { /* DATA JSON DI SINI */ };
 </script>
-<script src="https://cdn.jsdelivr.net/gh/muflihan-ak/perangkat-ajar-madrasah@v1.6.0/mesin/mesin-perangkat.js"
+<script src="https://cdn.jsdelivr.net/gh/muflihan-ak/perangkat-ajar-madrasah@v1.7.0/mesin/mesin-perangkat.js"
   onerror="var s=document.createElement('script');s.src='https://muflihan-ak.github.io/perangkat-ajar-madrasah/mesin/mesin-perangkat.js';document.head.appendChild(s);"></script>
 </head>
-<body><div id="app">Memuat mesin perangkat ajar…</div></body>
+<body><div id="app">Memuat mesin perangkat ajar…</div>
+<script>setTimeout(function(){var a=document.getElementById('app');if(!window.MesinPerangkat&&a&&/Memuat mesin/.test(a.textContent))a.innerHTML='<p style="font-family:sans-serif;padding:20px;color:#a30000"><b>Mesin perangkat ajar gagal dimuat.</b> Periksa koneksi internet lalu muat ulang. Bila tetap gagal, pastikan rilis v1.7.0 sudah ada di GitHub.</p>';},15000);</script>
+</body>
 </html>
 ```
 

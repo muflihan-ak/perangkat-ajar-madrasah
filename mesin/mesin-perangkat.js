@@ -1,12 +1,12 @@
 /*!
- * Mesin Perangkat Ajar Madrasah v1.6.0
+ * Mesin Perangkat Ajar Madrasah v1.7.0
  * CP · TP · ATP · Prota · Prosem · KKTP · Modul Ajar (Pembelajaran Mendalam Berbasis Cinta)
  * Data: window.PERANGKAT (ditulis skill Gemini). Rujukan CP/JP/Kaldik: berkas .md di folder data/.
  * Repo: github.com/muflihan-ak/perangkat-ajar-madrasah
  */
 (function () {
   'use strict';
-  var VERSI = '1.6.0';
+  var VERSI = '1.7.0';
   var SRC_MESIN = (document.currentScript && document.currentScript.src) || '';
   var REPO = 'muflihan-ak/perangkat-ajar-madrasah';
   var DATA_BASES = [
@@ -41,10 +41,11 @@
   function lsSet(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) { } }
   var ROMAWI = { '1': 'I', '2': 'II' };
   var KELAS_TXT = { 'I': 'I (Satu)', 'II': 'II (Dua)', 'III': 'III (Tiga)', 'IV': 'IV (Empat)', 'V': 'V (Lima)', 'VI': 'VI (Enam)', 'VII': 'VII (Tujuh)', 'VIII': 'VIII (Delapan)', 'IX': 'IX (Sembilan)', 'X': 'X (Sepuluh)', 'XI': 'XI (Sebelas)', 'XII': 'XII (Dua Belas)' };
-  var KELAS_FASE = { A: ['I', 'II'], B: ['III', 'IV'], C: ['V', 'VI'], D: ['VII', 'VIII', 'IX'], E: ['X'], F: ['XI', 'XII'] };
+  var KELAS_FASE = { A: ['I', 'II'], B: ['III', 'IV'], C: ['V', 'VI'], D: ['VII', 'VIII', 'IX'], E: ['X'], F: ['XI', 'XII'], FONDASI: ['A', 'B'] };
   var KELAS_AKHIR = { 'VI': 1, 'IX': 1, 'XII': 1 };
   var JENJANG_TXT = { MA: 'MA', MTS: 'MTs', MI: 'MI', RA: 'RA' };
-  var FASE_JENJANG = { MA: ['E', 'F'], MTS: ['D'], MI: ['A', 'B', 'C'] };
+  var FASE_JENJANG = { MA: ['E', 'F'], MTS: ['D'], MI: ['A', 'B', 'C'], RA: ['FONDASI'] };
+  var KELOMPOK_TXT = { A: 'A (usia 4–5 tahun)', B: 'B (usia 5–6 tahun)' };
   var BULAN_ORDER = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
   var KBC = { 1: 'Cinta Allah dan Rasul-Nya', 2: 'Cinta Ilmu', 3: 'Cinta Lingkungan', 4: 'Cinta Diri dan Sesama Manusia', 5: 'Cinta Tanah Air' };
   var DPL = { 1: 'Keimanan & Ketakwaan terhadap Tuhan YME', 2: 'Kewargaan', 3: 'Penalaran Kritis', 4: 'Kreativitas', 5: 'Kolaborasi', 6: 'Kemandirian', 7: 'Kesehatan', 8: 'Komunikasi' };
@@ -64,13 +65,23 @@
     var m = t.match(/\s(XII|XI|IX|X|VIII|VII|VI|IV|V|III|II|I)\s/) || t.match(/\s(1[0-2]|[1-9])\s/);
     return m ? (ROMAWI_K[m[1]] || m[1]) : '';
   }
-  var WARN_ID = [], kelasAsli = I.kelas != null ? I.kelas : (P.kelas != null ? P.kelas : I.kelas_fase);
+  var RA = P.jenjang === 'RA';
+  function normKelompok(v) { var t = ' ' + String(v == null ? '' : v).toUpperCase().replace(/KELOMPOK|KEL\.|\(.*?\)|[.,\/_-]/g, ' ') + ' ', m = t.match(/\s([AB])\s/); return m ? m[1] : ''; }
+  if (RA) normKelas = normKelompok;
+  var WARN_ID = [], kelasAsli = I.kelas != null ? I.kelas : (P.kelas != null ? P.kelas : (I.kelompok != null ? I.kelompok : I.kelas_fase));
   I.kelas = normKelas(kelasAsli);
+  if (RA && !I.kelas) { WARN_ID.push('Kelompok tidak terbaca' + (kelasAsli ? ' ("' + kelasAsli + '")' : ' (kosong)') + '. Dokumen sementara memakai Kelompok A. Minta Gemini mengisi <b>identitas.kelas</b> dengan A atau B.'); I.kelas = 'A'; }
   if (!I.kelas) { var kDef = P.jenjang === 'MTS' ? ['VII', 'VII, VIII, atau IX'] : P.jenjang === 'MI' ? ['I', 'I sampai VI'] : ['X', 'X, XI, atau XII']; WARN_ID.push('Kelas tidak terbaca' + (kelasAsli ? ' ("' + kelasAsli + '")' : ' (kosong)') + '. Dokumen sementara memakai kelas ' + kDef[0] + '. Minta Gemini mengisi <b>identitas.kelas</b> dengan ' + kDef[1] + '.'); I.kelas = kDef[0]; }
-  var faseHitung = FASE_KELAS[I.kelas] || 'E', faseAsli = String(I.fase || '').toUpperCase().replace(/FASE|\s/g, '');
+  var faseHitung = RA ? 'FONDASI' : (FASE_KELAS[I.kelas] || 'E'), faseAsli = String(I.fase || '').toUpperCase().replace(/FASE|\s/g, '');
+  if (RA && /^(FONDASI|PONDASI)$/.test(faseAsli)) faseAsli = 'FONDASI';
   if (faseAsli && faseAsli !== faseHitung) WARN_ID.push('Fase tertulis <b>' + faseAsli + '</b>, padahal kelas ' + I.kelas + ' adalah <b>Fase ' + faseHitung + '</b>. Dokumen memakai Fase ' + faseHitung + '.');
   I.fase = faseHitung;
   if (FASE_JENJANG[P.jenjang] && FASE_JENJANG[P.jenjang].indexOf(I.fase) < 0) WARN_ID.push('Kelas ' + I.kelas + ' (Fase ' + I.fase + ') bukan kelas jenjang ' + (JENJANG_TXT[P.jenjang] || P.jenjang) + '. Periksa <b>jenjang</b> dan <b>identitas.kelas</b>.');
+  if (RA) { I.mapel_id = I.mapel_id || 'fase-fondasi'; }
+  function faseTxt() { return RA ? 'Fondasi' : I.fase; }
+  function lblKelas() { return RA ? 'Kelompok' : 'Kelas'; }
+  function kelasTxt() { return RA ? (KELOMPOK_TXT[I.kelas] || I.kelas) : (KELAS_TXT[I.kelas] || I.kelas); }
+  function subJudul(k) { return RA ? 'Fase Fondasi' + (k ? ' — Kelompok ' + I.kelas : '') : (I.mapel_nama || '') + ' — Fase ' + I.fase + (k ? ' Kelas ' + I.kelas : ''); }
   function kelasFase() { return KELAS_FASE[I.fase] || [I.kelas]; }
   function multiKelas() { return kelasFase().length > 1; }
   arr(P.tp).forEach(function (t) { if (t && t.kelas != null) t.kelas = normKelas(t.kelas) || t.kelas; });
@@ -108,7 +119,7 @@
   function parseCP(text, map) {
     var parts = text.split(/\n(?=## \[)/);
     parts.forEach(function (p) {
-      var m = p.match(/^## \[([^|\]]+)\|([A-F])\]\s*(.+)/);
+      var m = p.match(/^## \[([^|\]]+)\|([A-F]|FONDASI)\]\s*(.+)/);
       if (!m) return;
       var body = p.slice(m[0].length);
       var els = body.split(/\n(?=### Elemen: )/), intro = els.shift();
@@ -155,10 +166,11 @@
     var j = P.jenjang.toLowerCase();
     var cpFiles = j === 'ma' ? ['ma/cp-ma-umum-fase-' + I.fase.toLowerCase() + '.md', 'ma/cp-ma-pai-arab.md', 'ma/cp-ma-keagamaan.md'] :
       j === 'mts' ? ['mts/cp-mts-umum-fase-' + I.fase.toLowerCase() + '.md', 'mts/cp-mts-pai-arab.md'] :
-      j === 'mi' ? ['mi/cp-mi-umum-fase-' + I.fase.toLowerCase() + '.md', 'mi/cp-mi-pai-arab.md'] : [];
+      j === 'mi' ? ['mi/cp-mi-umum-fase-' + I.fase.toLowerCase() + '.md', 'mi/cp-mi-pai-arab.md'] :
+      j === 'ra' ? ['ra/cp-ra-fondasi.md'] : [];
     var jobs = cpFiles.map(function (f) { return fetchText(f).then(function (t) { parseCP(t, CP); }).catch(function () { GAGAL.push(f); }); });
     jobs.push(fetchText(j + '/struktur-kurikulum-' + j + '.md').then(function (t) { STR = parseStruktur(t); }).catch(function () { GAGAL.push('struktur'); }));
-    if (P.modul_ajar.length) jobs.push(fetchText('model-pedagogis.md').then(parseModel).catch(function () { GAGAL.push('model-pedagogis'); }));
+    if (P.modul_ajar.length) jobs.push(fetchText(RA ? 'ra/model-pedagogis-ra.md' : 'model-pedagogis.md').then(parseModel).catch(function () { GAGAL.push('model-pedagogis'); }));
     jobs.push(fetchText('kaldik-2026-2027.md').then(function (t) { KAL = parseKaldik(t); }).catch(function () { GAGAL.push('kaldik'); }));
     return Promise.all(jobs);
   }
@@ -194,13 +206,22 @@
     var list = P.tp;
     if (multiKelas()) {
       // TP satu fase dibagi berurutan ke kelas-kelas fase menurut JP (Fase F: XI/XII, Fase D: VII/VIII/IX)
-      var K = kelasFase(), n = K.length, tot = list.reduce(function (a, t) { return a + (+t.jp || 0); }, 0), acc = 0;
-      list.forEach(function (t) { if (!t.kelas) { t.kelas = tot > 0 ? K[Math.min(n - 1, Math.floor(acc * n / tot))] : K[n - 1]; } acc += (+t.jp || 0); t._auto = true; });
+      var K = kelasFase(), n = K.length, tot = list.reduce(function (a, t) { return a + bobot(t); }, 0), acc = 0;
+      list.forEach(function (t) { if (!t.kelas) { t.kelas = tot > 0 ? K[Math.min(n - 1, Math.floor(acc * n / tot))] : K[n - 1]; } acc += bobot(t); t._auto = true; });
       return list.filter(function (t) { return String(t.kelas).toUpperCase() === I.kelas; });
     }
     return list;
   }
+  function bobot(t) { return +t.jp || (RA ? 1 : 0); }
   function assignSemester(list) {
+    if (RA) {
+      // RA: semester TP mengikuti topik mingguan pertama yang memuatnya; bila tidak ada, dibagi dua menurut urutan
+      var top = topikRA(), sisa = list.filter(function (t) { return !t.semester; });
+      sisa.forEach(function (t) { var tk = top.filter(function (x) { return arr(x.tp_kode).indexOf(t.kode) >= 0; })[0]; if (tk) t.semester = +tk.semester || 1; });
+      var belum = list.filter(function (t) { return !t.semester; });
+      belum.forEach(function (t, i) { t.semester = i < Math.ceil(belum.length / 2) ? 1 : 2; });
+      return list;
+    }
     var cap1 = efektif('1') * jpMinggu(), cap2 = efektif('2') * jpMinggu(), tot = list.reduce(function (a, t) { return a + (+t.jp || 0); }, 0), acc = 0;
     var lim = tot * cap1 / ((cap1 + cap2) || 1);
     list.forEach(function (t) { if (!t.semester) t.semester = acc < lim ? 1 : 2; acc += (+t.jp || 0); });
@@ -231,23 +252,23 @@
   function semTxt(s) { return s == '1' ? 'I (Ganjil)' : s == '2' ? 'II (Genap)' : 'I (Ganjil) dan II (Genap)'; }
   function idTable(opt) {
     opt = opt || {};
-    var rows = [['Satuan Pendidikan', I.madrasah], ['Mata Pelajaran', I.mapel_nama || (cpMapel() || {}).nama], ['Fase / Kelas', I.fase + ' / ' + (KELAS_TXT[I.kelas] || I.kelas)], ['Semester', semTxt(opt.sem || (opt.tahunan ? '' : I.semester))], ['Tahun Pelajaran', I.tahun_pelajaran]];
+    var rows = [['Satuan Pendidikan', I.madrasah]].concat(RA ? [] : [['Mata Pelajaran', I.mapel_nama || (cpMapel() || {}).nama]]).concat([['Fase / ' + lblKelas(), faseTxt() + ' / ' + kelasTxt()], ['Semester', semTxt(opt.sem || (opt.tahunan ? '' : I.semester))], ['Tahun Pelajaran', I.tahun_pelajaran]]);
     if (opt.extra) rows = rows.concat(opt.extra);
     return '<table class="identitas">' + rows.map(function (r) { return '<tr><td class="lbl">' + esc(r[0]) + '</td><td class="sep">:</td><td>' + esc(r[1] || '') + '</td></tr>'; }).join('') + '</table>';
   }
   function ttd() {
     var kp = I.kepala, g = I.guru, lab = function (x) { return esc((x.label_nip || 'NIP') + '. ' + (x.nip || '-')); };
     return '<table class="ttd"><tr><td><br>Mengetahui,<br>Kepala ' + esc(I.madrasah || 'Madrasah') + '<div class="ttd-ruang"></div><b><u>' + esc(kp.nama || '..............................') + '</u></b><br>' + lab(kp) +
-      '</td><td>' + esc(I.tempat || '..........') + ', ' + esc(I.tanggal || '..........') + '<br>Guru Mata Pelajaran<br>' + esc(I.mapel_nama || '') + '<div class="ttd-ruang"></div><b><u>' + esc(g.nama || '..............................') + '</u></b><br>' + lab(g) + '</td></tr></table>';
+      '</td><td>' + esc(I.tempat || '..........') + ', ' + esc(I.tanggal || '..........') + (RA ? '<br>Guru Kelompok ' + esc(I.kelas) + '<br>' : '<br>Guru Mata Pelajaran<br>' + esc(I.mapel_nama || '')) + '<div class="ttd-ruang"></div><b><u>' + esc(g.nama || '..............................') + '</u></b><br>' + lab(g) + '</td></tr></table>';
   }
   function kbcCodes(t) { return arr(t.kbc).map(num).filter(Boolean); }
   function dplCodes(t) { return arr(t.dpl).map(num).filter(Boolean); }
 
   /* ---- 1. CP ---- */
   function docCP() {
-    var cp = cpMapel(); var h = kop() + judul('Capaian Pembelajaran', (I.mapel_nama || '') + ' — Fase ' + I.fase) + idTable({ tahunan: true });
+    var cp = cpMapel(); var h = kop() + judul('Capaian Pembelajaran', subJudul(false)) + idTable({ tahunan: true });
     if (!cp) return h + '<p class="peringatan">CP untuk id mapel "' + esc(I.mapel_id) + '" Fase ' + esc(I.fase) + ' tidak ditemukan pada berkas data. Periksa id mapel.</p>';
-    h += '<p class="sumber">Sumber: ' + esc(/mapk|^(al-quran-hadis|akidah-akhlak|fikih|ski|bahasa-arab)$/.test(cp.id) ? 'Keputusan Dirjen Pendis Nomor 9941 Tahun 2025' : 'Keputusan Kepala BSKAP Nomor 046/H/KR/2025') + '</p>';
+    h += '<p class="sumber">Sumber: ' + esc(/mapk|^(al-quran-hadis|akidah-akhlak|fikih|ski|bahasa-arab|fase-fondasi)$/.test(cp.id) ? 'Keputusan Dirjen Pendis Nomor 9941 Tahun 2025' : 'Keputusan Kepala BSKAP Nomor 046/H/KR/2025') + '</p>';
     if (cp.intro) h += md(cp.intro);
     h += '<table class="grid"><thead><tr><th style="width:7%">No</th><th style="width:25%">Elemen</th><th>Capaian Pembelajaran</th></tr></thead><tbody>';
     cp.elemen.forEach(function (e, i) { h += '<tr><td class="c">' + (i + 1) + '</td><td><b>' + esc(e.nama) + '</b></td><td>' + md(e.teks) + '</td></tr>'; });
@@ -257,10 +278,10 @@
   function docTP() {
     TPk();                                                // pastikan pembagian kelas & semester sudah terisi
     var cp = cpMapel(), F = multiKelas(), nc = F ? 5 : 4;
-    var h = kop() + judul('Tujuan Pembelajaran', (I.mapel_nama || '') + ' — Fase ' + I.fase) + idTable({ tahunan: true });
+    var h = kop() + judul('Tujuan Pembelajaran', subJudul(false)) + idTable({ tahunan: true });
     var groups = {}, order = [];
     P.tp.forEach(function (t) { var k = t.elemen || '-'; if (!groups[k]) { groups[k] = []; order.push(k); } groups[k].push(t); });
-    h += '<table class="grid"><thead><tr><th style="width:6%" rowspan="2">No</th><th rowspan="2">Tujuan Pembelajaran</th>' + (F ? '<th rowspan="2" style="width:9%">Kelas</th>' : '') + '<th colspan="2" style="width:16%">Semester</th></tr><tr><th style="width:8%">I</th><th style="width:8%">II</th></tr></thead><tbody>';
+    h += '<table class="grid"><thead><tr><th style="width:6%" rowspan="2">No</th><th rowspan="2">Tujuan Pembelajaran</th>' + (F ? '<th rowspan="2" style="width:9%">' + lblKelas() + '</th>' : '') + '<th colspan="2" style="width:16%">Semester</th></tr><tr><th style="width:8%">I</th><th style="width:8%">II</th></tr></thead><tbody>';
     var no = 0;
     order.forEach(function (k, gi) {
       var ei = elemenIndex(k), cpt = cp && ei >= 0 ? cp.elemen[ei].teks : '', lab = 'Elemen ' + (gi + 1) + ': ' + k;
@@ -273,12 +294,12 @@
       });
     });
     h += '</tbody></table>';
-    if (F) h += '<p class="kecil">Kolom semester diisi untuk TP kelas ' + esc(I.kelas) + '. TP kelas lain pada Fase ' + esc(I.fase) + ' ditampilkan sebagai keterangan alur fase.</p>';
+    if (F) h += '<p class="kecil">Kolom semester diisi untuk TP ' + lblKelas().toLowerCase() + ' ' + esc(I.kelas) + '. TP ' + lblKelas().toLowerCase() + ' lain pada Fase ' + esc(faseTxt()) + ' ditampilkan sebagai keterangan alur fase.</p>';
     return h + ttd();
   }
   /* ---- 3. ATP ---- */
   function docATP() {
-    var list = TPk(), h = kop() + judul('Alur Tujuan Pembelajaran (ATP)', (I.mapel_nama || '') + ' — Fase ' + I.fase + ' Kelas ' + I.kelas) + idTable({ tahunan: true });
+    var list = TPk(), h = kop() + judul('Alur Tujuan Pembelajaran (ATP)', subJudul(true)) + idTable({ tahunan: true });
     h += '<table class="grid"><thead><tr><th style="width:5%">No</th><th style="width:10%">Kode</th><th>Alur Tujuan Pembelajaran</th><th style="width:22%">Materi Pokok</th><th style="width:7%">JP</th><th style="width:7%">Sem</th><th style="width:10%">Topik KBC</th></tr></thead><tbody>';
     var topik = null;
     list.forEach(function (t, i) {
@@ -299,7 +320,7 @@
   }
   /* ---- 4. Prota ---- */
   function docProta() {
-    var jpm = jpMinggu(), h = kop() + judul('Program Tahunan', (I.mapel_nama || '') + ' — Fase ' + I.fase + ' Kelas ' + I.kelas) + idTable({ tahunan: true, extra: [['Alokasi Waktu', jpm + ' JP per minggu (1 JP = ' + (P.jenjang === 'MA' ? 45 : P.jenjang === 'MTS' ? 40 : 35) + ' menit)']] });
+    var jpm = jpMinggu(), h = kop() + judul('Program Tahunan', subJudul(true)) + idTable({ tahunan: true, extra: [['Alokasi Waktu', jpm + ' JP per minggu (1 JP = ' + (P.jenjang === 'MA' ? 45 : P.jenjang === 'MTS' ? 40 : 35) + ' menit)']] });
     h += '<h3>A. Rincian Minggu Efektif</h3><p class="sub">Semester I (Ganjil)</p>' + tabelMinggu('1') + '<p class="sub">Semester II (Genap)</p>' + tabelMinggu('2');
     h += '<h3>B. Program Tahunan</h3><table class="grid"><thead><tr><th style="width:6%">No</th><th style="width:11%">Kode TP</th><th>Tujuan Pembelajaran</th><th style="width:24%">Materi Pokok</th><th style="width:8%">JP</th></tr></thead><tbody>';
     var tot = 0;
@@ -338,7 +359,7 @@
       });
       var cad = W.map(function (w, i) { if (!w.ef) return 0; var u = cells.reduce(function (a, r) { return a + r[i]; }, 0); return Math.max(0, jpm - u); });
       var nW = W.length, wTP = 34, cw = ((100 - 5 - wTP - 6) / nW).toFixed(2);
-      h += (si ? '<div class="pb"></div>' : '') + kop() + judul('Program Semester', (I.mapel_nama || '') + ' — Fase ' + I.fase + ' Kelas ' + I.kelas) + idTable({ sem: s, extra: [['Alokasi Waktu', jpm + ' JP per minggu; ' + efektif(s) + ' minggu efektif']] });
+      h += (si ? '<div class="pb"></div>' : '') + kop() + judul('Program Semester', subJudul(true)) + idTable({ sem: s, extra: [['Alokasi Waktu', jpm + ' JP per minggu; ' + efektif(s) + ' minggu efektif']] });
       h += '<table class="grid prosem"><colgroup><col style="width:5%"><col style="width:' + wTP + '%"><col style="width:6%">' + W.map(function () { return '<col style="width:' + cw + '%">'; }).join('') + '</colgroup><thead><tr><th rowspan="2">No</th><th rowspan="2">Tujuan Pembelajaran</th><th rowspan="2">JP</th>' +
         months.map(function (m) { return '<th colspan="' + mb[m].length + '">' + m.slice(0, 3) + '</th>'; }).join('') + '</tr><tr>' +
         W.map(function (w) { return '<th class="mg">' + w.ke + '</th>'; }).join('') + '</tr></thead><tbody>';
@@ -359,7 +380,7 @@
     var B = kktpBands(), h = '';
     ['1', '2'].forEach(function (s, si) {
       var L = tpSem(s);
-      h += (si ? '<div class="pb"></div>' : '') + kop() + judul('Kriteria Ketercapaian Tujuan Pembelajaran (KKTP)', (I.mapel_nama || '') + ' — Fase ' + I.fase + ' Kelas ' + I.kelas) + idTable({ sem: s, extra: [['Batas Ketuntasan', P.pengaturan.kktp + ' (pendekatan interval nilai)']] });
+      h += (si ? '<div class="pb"></div>' : '') + kop() + judul('Kriteria Ketercapaian Tujuan Pembelajaran (KKTP)', subJudul(true)) + idTable({ sem: s, extra: [['Batas Ketuntasan', P.pengaturan.kktp + ' (pendekatan interval nilai)']] });
       h += '<table class="grid kktp"><thead><tr><th rowspan="2" style="width:5%">No</th><th rowspan="2" style="width:27%">Tujuan Pembelajaran</th><th colspan="' + B.length + '">Interval Nilai</th></tr><tr>' + B.map(function (b, i) { return '<th>' + b[0] + '–' + b[1] + '<div class="kecil n">' + KKTP_KET[B.length === 3 && i === 2 ? 2 : i].split(',')[0] + '</div></th>'; }).join('') + '</tr></thead><tbody>';
       var topik = null;
       L.forEach(function (t, i) {
@@ -475,15 +496,188 @@
     return h;
   }
 
+  /* ================= MODE FONDASI (RA) ================= */
+  function hariSekolah() { var h = +P.pengaturan.hari_sekolah || +I.hari_sekolah || 6; return h === 5 ? 5 : 6; }
+  function menitHari() { return +P.pengaturan.menit_hari || Math.round(900 / hariSekolah()); }
+  var LEVEL_RA = [['BB', 'Belum Berkembang'], ['MB', 'Mulai Berkembang'], ['BSH', 'Berkembang Sesuai Harapan'], ['BSB', 'Berkembang Sangat Baik']];
+  var LEVEL_RA_KET = ['Anak belum menunjukkan perilaku yang diharapkan walaupun dengan bantuan.', 'Anak mulai menunjukkan perilaku dengan bantuan atau contoh dari guru.', 'Anak menunjukkan perilaku secara mandiri dan konsisten.', 'Anak menunjukkan perilaku secara mandiri dan dapat membantu atau mencontohkan kepada teman.'];
+  function topikRA() {
+    return arr(P.topik_ra).filter(function (x) { return x && (!x.kelompok || normKelompok(x.kelompok) === I.kelas); }).map(function (x) {
+      var sub = arr(x.subtopik), mg = +x.minggu || sub.length || 1;
+      return { nama: x.nama || x.topik || '', subtopik: sub, minggu: mg, semester: String(x.semester || 1), tp_kode: arr(x.tp_kode), asal: x };
+    });
+  }
+  // tempatkan topik berurutan ke minggu efektif tiap semester
+  function jadwalRA(sem) {
+    var W = weeksFor(sem), L = topikRA().filter(function (t) { return t.semester === String(sem); }), slot = [], wi = 0;
+    W.forEach(function () { slot.push(null); });
+    L.forEach(function (t, ti) {
+      for (var k = 0; k < t.minggu; k++) {
+        while (wi < W.length && !W[wi].ef) wi++;
+        if (wi >= W.length) { t.lebih = (t.lebih || 0) + 1; continue; }
+        slot[wi] = { ti: ti, ke: k + 1, sub: t.subtopik[k] || '' }; wi++;
+      }
+    });
+    return { W: W, L: L, slot: slot, pakai: L.reduce(function (a, t) { return a + t.minggu; }, 0) };
+  }
+  function namaTopikTP(kode) { return topikRA().filter(function (t) { return t.tp_kode.indexOf(kode) >= 0; }).map(function (t) { return t.nama; }); }
+  function alokasiRA() { return hariSekolah() + ' hari per minggu × ' + menitHari() + ' menit (' + hariSekolah() * menitHari() + ' menit per minggu; minimal 900 menit)'; }
+  function docATPra() {
+    var list = TPk(), h = kop() + judul('Alur Tujuan Pembelajaran (ATP)', subJudul(true)) + idTable({ tahunan: true });
+    h += '<table class="grid"><thead><tr><th style="width:5%">No</th><th style="width:9%">Kode</th><th>Alur Tujuan Pembelajaran</th><th style="width:22%">Materi / Kegiatan Main</th><th style="width:17%">Topik Mingguan</th><th style="width:6%">Sem</th><th style="width:9%">Topik KBC</th></tr></thead><tbody>';
+    var el0 = null;
+    list.forEach(function (t, i) {
+      if (t.elemen !== el0) { el0 = t.elemen; h += '<tr class="grup"><td colspan="7"><b>Elemen: ' + esc(el0 || '-') + '</b></td></tr>'; }
+      h += '<tr><td class="c">' + (i + 1) + '</td><td class="c">' + esc(t.kode || '') + '</td><td>' + esc(t.tp) + '</td><td>' + esc(t.materi || '') + '</td><td class="kecil">' + esc(namaTopikTP(t.kode).join('; ')) + '</td><td class="c">' + (ROMAWI[t.semester] || '') + '</td><td class="c">' + kbcCodes(t).join(', ') + '</td></tr>';
+    });
+    if (!list.length) h += '<tr><td colspan="7" class="c kecil">Belum ada TP untuk Kelompok ' + esc(I.kelas) + '.</td></tr>';
+    h += '</tbody></table><p class="kecil"><b>Keterangan Topik KBC:</b> ' + Object.keys(KBC).map(function (k) { return k + ' = ' + KBC[k]; }).join('; ') + '.</p>';
+    return h + ttd();
+  }
+  function docProtaRA() {
+    var h = kop() + judul('Program Tahunan', subJudul(true)) + idTable({ tahunan: true, extra: [['Alokasi Waktu', alokasiRA()]] });
+    h += '<h3>A. Rincian Minggu Efektif</h3><p class="sub">Semester I (Ganjil)</p>' + tabelMinggu('1') + '<p class="sub">Semester II (Genap)</p>' + tabelMinggu('2');
+    h += '<h3>B. Program Tahunan (Topik Mingguan)</h3><table class="grid"><thead><tr><th style="width:5%">No</th><th style="width:22%">Topik</th><th>Subtopik</th><th style="width:11%">Alokasi (minggu)</th><th style="width:20%">TP yang Dikembangkan</th></tr></thead><tbody>';
+    var totE = 0, totP = 0;
+    ['1', '2'].forEach(function (s) {
+      var J = jadwalRA(s), ef = efektif(s); totE += ef; totP += J.pakai;
+      var lab = 'Semester ' + ROMAWI[s] + (s === '1' ? ' (Ganjil)' : ' (Genap)');
+      h += '<tr class="grup" data-label="' + lab + '"><td colspan="5"><b>' + lab + '</b></td></tr>';
+      J.L.forEach(function (t, i) { h += '<tr><td class="c">' + (i + 1) + '</td><td><b>' + esc(t.nama) + '</b></td><td>' + (t.subtopik.length ? '<ol>' + t.subtopik.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ol>' : '-') + '</td><td class="c">' + t.minggu + '</td><td class="kecil">' + esc(t.tp_kode.join(', ')) + '</td></tr>'; });
+      if (!J.L.length) h += '<tr><td colspan="5" class="c kecil">Belum ada topik pada semester ini.</td></tr>';
+      if (ef > J.pakai) h += '<tr><td class="c">' + (J.L.length + 1) + '</td><td colspan="2">Penguatan, pengulangan, dan kegiatan khusus (hari besar, kunjungan, pentas)</td><td class="c">' + (ef - J.pakai) + '</td><td></td></tr>';
+      h += '<tr class="total"><td colspan="3">Jumlah minggu efektif Semester ' + ROMAWI[s] + '</td><td class="c">' + ef + '</td><td></td></tr>';
+      if (J.pakai > ef) h += '<tr><td colspan="5" class="peringatan">Peringatan: topik semester ' + ROMAWI[s] + ' memerlukan ' + J.pakai + ' minggu, melebihi ' + ef + ' minggu efektif.</td></tr>';
+    });
+    h += '<tr class="total"><td colspan="3">Jumlah minggu efektif satu tahun</td><td class="c">' + totE + '</td><td></td></tr></tbody></table>';
+    return h + ttd();
+  }
+  function docProsemRA() {
+    var h = '';
+    ['1', '2'].forEach(function (s, si) {
+      var J = jadwalRA(s), W = J.W, months = [], mb = {};
+      W.forEach(function (w) { if (!mb[w.bulan]) { mb[w.bulan] = []; months.push(w.bulan); } mb[w.bulan].push(w); });
+      var nW = W.length, wT = 30, cw = ((100 - 5 - wT - 7) / nW).toFixed(2);
+      h += (si ? '<div class="pb"></div>' : '') + kop() + judul('Program Semester', subJudul(true)) + idTable({ sem: s, extra: [['Alokasi Waktu', alokasiRA() + '; ' + efektif(s) + ' minggu efektif']] });
+      h += '<table class="grid prosem"><colgroup><col style="width:5%"><col style="width:' + wT + '%"><col style="width:7%">' + W.map(function () { return '<col style="width:' + cw + '%">'; }).join('') + '</colgroup><thead><tr><th rowspan="2">No</th><th rowspan="2">Topik</th><th rowspan="2">Mg</th>' +
+        months.map(function (m) { return '<th colspan="' + mb[m].length + '">' + m.slice(0, 3) + '</th>'; }).join('') + '</tr><tr>' + W.map(function (w) { return '<th class="mg">' + w.ke + '</th>'; }).join('') + '</tr></thead><tbody>';
+      J.L.forEach(function (t, ti) {
+        h += '<tr><td class="c">' + (ti + 1) + '</td><td><b>' + esc(t.nama) + '</b></td><td class="c">' + t.minggu + '</td>' +
+          W.map(function (w, i) { var sl = J.slot[i]; return w.ef ? '<td class="c mg' + (sl && sl.ti === ti ? ' isi-jp' : '') + '">' + (sl && sl.ti === ti ? sl.ke : '') + '</td>' : '<td class="mg libur"></td>'; }).join('') + '</tr>';
+      });
+      if (!J.L.length) h += '<tr><td colspan="' + (3 + nW) + '" class="c kecil">Belum ada topik pada semester ini.</td></tr>';
+      h += '<tr class="total"><td colspan="2">Minggu efektif</td><td class="c">' + efektif(s) + '</td>' + W.map(function (w) { return w.ef ? '<td class="c mg">✓</td>' : '<td class="mg libur"></td>'; }).join('') + '</tr></tbody></table>';
+      var ket = []; W.forEach(function (w) { if (!w.ef && w.ket) ket.push(w.bulan.slice(0, 3) + '-' + w.ke + ': ' + w.ket); });
+      h += '<p class="kecil"><b>Keterangan:</b> angka = minggu ke-n topik (subtopik ke-n); kolom arsir = minggu tidak efektif' + (ket.length ? ' (' + esc(ket.join('; ')) + ')' : '') + '.</p>';
+      // rincian per minggu
+      var rows = [], n = 0;
+      W.forEach(function (w, i) { var sl = J.slot[i]; if (sl) { n++; var t = J.L[sl.ti]; rows.push('<tr><td class="c">' + n + '</td><td class="c">' + esc(w.bulan + ' ' + w.ke) + '</td><td class="c">' + esc(w.senin) + '</td><td>' + esc(t.nama) + '</td><td>' + esc(sl.sub || '-') + '</td></tr>'); } });
+      if (rows.length) h += '<p class="sub">Rincian Topik Mingguan Semester ' + ROMAWI[s] + '</p><table class="grid"><thead><tr><th style="width:7%">Mg ke-</th><th style="width:16%">Bulan / Minggu</th><th style="width:15%">Senin</th><th>Topik</th><th>Subtopik</th></tr></thead><tbody>' + rows.join('') + '</tbody></table>';
+      h += ttd();
+    });
+    return h;
+  }
+  function docKriteriaRA() {
+    var h = '';
+    ['1', '2'].forEach(function (s, si) {
+      var L = tpSem(s);
+      h += (si ? '<div class="pb"></div>' : '') + kop() + judul('Kriteria Capaian Perkembangan', subJudul(true)) + idTable({ sem: s, extra: [['Kriteria', 'BB – MB – BSH – BSB (tanpa nilai angka)']] });
+      h += '<table class="grid kktp"><thead><tr><th style="width:5%">No</th><th style="width:27%">Tujuan Pembelajaran</th>' + LEVEL_RA.map(function (l) { return '<th>' + l[0] + '<div class="kecil n">' + l[1] + '</div></th>'; }).join('') + '</tr></thead><tbody>';
+      var el0 = null;
+      L.forEach(function (t, i) {
+        if (t.elemen !== el0) { el0 = t.elemen; h += '<tr class="grup"><td colspan="6"><b>Elemen: ' + esc(el0 || '-') + '</b></td></tr>'; }
+        var d = arr(t.kktp);
+        h += '<tr><td class="c">' + (i + 1) + '</td><td><b>' + esc(t.kode || '') + '</b> ' + esc(t.tp) + '</td>' + [0, 1, 2, 3].map(function (k) { return '<td class="kecil">' + esc(d[k] || LEVEL_RA_KET[k]) + '</td>'; }).join('') + '</tr>';
+      });
+      if (!L.length) h += '<tr><td colspan="6" class="c kecil">Belum ada TP pada semester ini.</td></tr>';
+      h += '</tbody></table><p class="sub">Keterangan:</p><table class="grid"><tbody>' + LEVEL_RA.map(function (l, i) { return '<tr><td style="width:20%" class="c"><b>' + l[0] + '</b><br><span class="kecil">' + l[1] + '</span></td><td>' + LEVEL_RA_KET[i] + '</td></tr>'; }).join('') + '</tbody></table>';
+      h += '<p class="kecil">Capaian perkembangan dicatat melalui observasi, ceklis, catatan anekdot, hasil karya, dan foto berseri selama kegiatan bermain; tidak memakai nilai angka.</p>' + ttd();
+    });
+    return h;
+  }
+  function docModulRA(m, idx) {
+    var tps = arr(m.tp_kode).map(function (k) { return P.tp.filter(function (t) { return t.kode === k; })[0]; }).filter(Boolean);
+    var cp = cpMapel(), els = [];
+    tps.forEach(function (t) { var e = elemenIndex(t.elemen); if (e >= 0 && els.indexOf(e) < 0) els.push(e); });
+    var dpl = arr(m.dpl).map(num).filter(Boolean), kbc = arr(m.kbc).map(num).filter(Boolean);
+    if (!dpl.length) tps.forEach(function (t) { dplCodes(t).forEach(function (c) { if (dpl.indexOf(c) < 0) dpl.push(c); }); });
+    if (!kbc.length) tps.forEach(function (t) { kbcCodes(t).forEach(function (c) { if (kbc.indexOf(c) < 0) kbc.push(c); }); });
+    var hari = arr(m.hari || m.pertemuan), nH = hari.length || hariSekolah(), mH = +m.menit_hari || menitHari();
+    var d = m.desain || {}, idf = m.identifikasi || {}, sub = arr(m.subtopik);
+    var h = (idx ? '<div class="pb"></div>' : '') + kop() + judul('Modul Ajar', 'Rencana Pembelajaran Mendalam Berbasis Cinta — Raudhatul Athfal');
+    h += '<table class="grid head"><tr><td class="lbl">Satuan Pendidikan</td><td>' + esc(I.madrasah) + '</td><td class="lbl">Kelompok</td><td>' + esc(kelasTxt()) + '</td></tr>' +
+      '<tr><td class="lbl">Fase</td><td>Fondasi</td><td class="lbl">Semester</td><td>' + semTxt(m.semester || (tps[0] && tps[0].semester) || I.semester) + '</td></tr>' +
+      '<tr><td class="lbl">Topik</td><td>' + esc(m.judul_topik || m.topik || '') + (sub.length ? '<br><span class="kecil">Subtopik: ' + esc(sub.join('; ')) + '</span>' : '') + '</td><td class="lbl">Alokasi Waktu</td><td>' + esc('1 minggu (' + nH + ' hari × ' + mH + ' menit)') + '</td></tr>' +
+      '<tr><td class="lbl">Tahun Pelajaran</td><td>' + esc(I.tahun_pelajaran) + '</td><td class="lbl">Guru</td><td>' + esc(I.guru.nama) + '</td></tr></table>';
+    h += '<h3>I. IDENTIFIKASI</h3><p class="sub">1. Identifikasi Murid</p>' + md(idf.murid || '') + '<p class="sub">2. Identifikasi Materi dan Kegiatan Main</p>' + md(idf.materi || '');
+    h += '<div class="dua"><div><p class="sub">3. Dimensi Profil Lulusan (DPL)</p>' + tblCek(DPL, dpl, 'Dimensi Profil Lulusan', 'DPL') + '</div><div><p class="sub">4. Topik Panca Cinta (KBC)</p>' + tblCek(KBC, kbc, 'Topik Panca Cinta', 'Topik') + '</div></div>';
+    h += '<p class="sub">5. Materi Integrasi KBC</p>' + (arr(m.integrasi_kbc).length ? '<ul>' + arr(m.integrasi_kbc).map(function (x) { return '<li dir="auto"><b>' + esc(KBC[num(x.kode)] || x.topik || '') + ':</b> ' + inl(x.teks || x) + '</li>'; }).join('') + '</ul>' : '<p>-</p>');
+    var cpHtml = els.map(function (e) { return '<p><b>Elemen ' + esc(cp.elemen[e].nama) + ':</b></p>' + md(cp.elemen[e].teks); }).join('') || md(m.cp || '');
+    h += '<h3>II. DESAIN PEMBELAJARAN</h3><table class="grid desain">' +
+      '<tr><td class="lbl">Capaian Pembelajaran (CP)</td><td>' + cpHtml + '</td></tr>' +
+      '<tr><td class="lbl">Tujuan Pembelajaran</td><td>' + (m.pengantar_tp ? '<p>' + inl(m.pengantar_tp) + '</p>' : '') + '<ol>' + tps.map(function (t) { return '<li><b>' + esc(t.kode) + '</b> ' + esc(t.tp) + '</li>'; }).join('') + '</ol></td></tr>' +
+      '<tr><td class="lbl">Topik dan Subtopik</td><td>' + md(d.topik || (m.judul_topik || '') + (sub.length ? '\n- ' + sub.join('\n- ') : '')) + '</td></tr>' +
+      '<tr><td class="lbl">Model Pembelajaran</td><td>' + modelHtml(m) + md(d.praktik_pedagogis || (modelHtml(m) ? '' : '-')) + '</td></tr>' +
+      '<tr><td class="lbl">Kemitraan dengan Orang Tua</td><td>' + md(d.kemitraan || '-') + '</td></tr>' +
+      '<tr><td class="lbl">Lingkungan Main</td><td>' + md(d.lingkungan || '-') + '</td></tr>' +
+      '<tr><td class="lbl">Media dan Alat Permainan Edukatif</td><td>' + md(d.media || d.digital || '-') + '</td></tr></table>';
+    var du = m.durasi || {}, r5 = function (x) { return Math.max(5, Math.round(x / 5) * 5); };
+    var dA = du.pembukaan || r5(mH * 0.2), dR = du.recalling || r5(mH * 0.1), dP = du.penutup || r5(mH * 0.2), dI = du.inti || (mH - dA - dR - dP);
+    h += '<h3>III. PENGALAMAN BELAJAR (KEGIATAN HARIAN)</h3>';
+    hari.forEach(function (p, i) {
+      if (p.ke == null && p.nomor != null) p.ke = p.nomor; if (!p.fokus && p.judul) p.fokus = p.judul;
+      h += '<div class="pertemuan"><p class="pt">Hari ke-' + (p.ke || i + 1) + (p.hari ? ' (' + esc(p.hari) + ')' : '') + (p.subtopik || p.fokus ? ' — ' + esc(p.subtopik || p.fokus) : '') + '</p>' +
+        '<p class="sub">PEMBUKAAN (' + dA + ' menit) <span class="prinsip">[Berkesadaran, Menggembirakan]</span></p>' + liList(p.pembukaan || p.awal) +
+        '<p class="sub">INTI — Kegiatan Main (' + dI + ' menit) <span class="prinsip">[Bermakna, Menggembirakan]</span></p>' + liList(p.inti || [].concat(arr(p.memahami), arr(p.mengaplikasi))) +
+        '<p class="sub">RECALLING (' + dR + ' menit) <span class="prinsip">[Berkesadaran, Bermakna]</span></p>' + liList(p.recalling || p.merefleksi) +
+        '<p class="sub">PENUTUP (' + dP + ' menit)</p>' + liList(p.penutup) + '</div>';
+    });
+    if (!hari.length) h += '<p class="peringatan">Kegiatan harian belum diisi.</p>';
+    h += ttd();
+    /* Lampiran I asesmen */
+    var as = m.asesmen || {}, lv = LEVEL_RA.map(function (l) { return l[0]; });
+    h += '<div class="pb"></div><h2 class="lamp">LAMPIRAN I: INSTRUMEN ASESMEN</h2><p class="c kecil">' + esc(m.judul_topik || '') + ' — Kelompok ' + esc(I.kelas) + ' (tanpa nilai angka)</p>';
+    var ck = arr(as.ceklis);
+    h += '<h3>A. Ceklis Capaian Perkembangan</h3><p class="kecil">Satu lembar untuk setiap anak. Beri tanda ✓ pada kolom capaian yang sesuai.</p><table class="lk-id"><tr><td>Nama Anak: ..............................</td><td>Minggu/Tanggal: ..............................</td></tr></table>' +
+      '<table class="grid"><thead><tr><th style="width:5%">No</th><th>Indikator</th><th style="width:9%">TP</th>' + lv.map(function (l) { return '<th style="width:8%">' + l + '</th>'; }).join('') + '</tr></thead><tbody>' +
+      (ck.length ? ck : tps.map(function (t) { return { indikator: t.tp, tp_kode: t.kode }; })).map(function (x, i) { return '<tr><td class="c">' + (i + 1) + '</td><td dir="auto">' + inl(x.indikator || x) + '</td><td class="c kecil">' + esc(x.tp_kode || '') + '</td>' + lv.map(function () { return '<td></td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table>';
+    var an = arr(as.anekdot);
+    h += '<h3>B. Catatan Anekdot</h3>' + (an.length ? '<p class="sub">Fokus pengamatan minggu ini:</p><ul>' + an.map(function (x) { return '<li dir="auto"><b>' + inl(x.kegiatan || '') + ':</b> ' + inl(x.fokus || x) + '</li>'; }).join('') + '</ul>' : '') +
+      '<table class="grid"><thead><tr><th style="width:5%">No</th><th style="width:15%">Nama Anak</th><th style="width:13%">Hari/Tempat</th><th>Peristiwa yang Diamati</th><th style="width:20%">Analisis Capaian (TP)</th><th style="width:16%">Tindak Lanjut</th></tr></thead><tbody>';
+    for (var r = 1; r <= 5; r++) h += '<tr><td class="c">' + r + '</td><td></td><td></td><td class="garis-isi"></td><td></td><td></td></tr>';
+    h += '</tbody></table>';
+    var hk = arr(as.hasil_karya);
+    h += '<h3>C. Hasil Karya</h3><table class="grid"><thead><tr><th style="width:5%">No</th><th style="width:24%">Karya</th><th>Aspek yang Diamati</th><th style="width:14%">Capaian</th><th style="width:20%">Catatan</th></tr></thead><tbody>' +
+      (hk.length ? hk.map(function (x, i) { return '<tr><td class="c">' + (i + 1) + '</td><td dir="auto">' + inl(x.karya || x) + '</td><td dir="auto">' + inl(x.aspek || '') + '</td><td class="c kecil">BB / MB / BSH / BSB</td><td></td></tr>'; }).join('') : '<tr><td class="c">1</td><td></td><td></td><td class="c kecil">BB / MB / BSH / BSB</td><td></td></tr>') + '</tbody></table>';
+    arr(as.foto_berseri).forEach(function (x, i) {
+      h += (i ? '' : '<h3>D. Foto Berseri</h3>') + '<table class="grid foto"><thead><tr><th colspan="3">' + (i + 1) + '. ' + inl(x.kegiatan || x) + (x.aspek ? ' <span class="n kecil">(aspek: ' + inl(x.aspek) + ')</span>' : '') + '</th></tr></thead><tbody><tr><td class="foto-kotak">Foto 1</td><td class="foto-kotak">Foto 2</td><td class="foto-kotak">Foto 3</td></tr><tr><td colspan="3" class="kecil">Analisis capaian: ...................................................................................................... Capaian: BB / MB / BSH / BSB</td></tr></tbody></table>';
+    });
+    h += '<p class="sub">Keterangan capaian:</p><table class="grid kecil"><tbody>' + LEVEL_RA.map(function (l, i) { return '<tr><td style="width:20%"><b>' + l[0] + '</b> – ' + l[1] + '</td><td>' + LEVEL_RA_KET[i] + '</td></tr>'; }).join('') + '</tbody></table>';
+    /* Lampiran II LKA */
+    var lk = m.lka || m.lkpd;
+    if (lk) {
+      h += '<div class="pb"></div><div class="lkpd"><h2 class="lamp">LAMPIRAN II: LEMBAR KEGIATAN ANAK (LKA)</h2><p class="c"><b>' + esc(lk.judul || m.judul_topik || '') + '</b></p>' +
+        '<table class="lk-id"><tr><td>Nama: ..............................</td><td>Kelompok: ' + esc(I.kelas) + '</td><td>Hari/Tanggal: ....................</td></tr></table>' +
+        (arr(lk.petunjuk_guru || lk.petunjuk).length ? '<div class="kotak kecil"><b>Petunjuk untuk guru (perintah dibacakan guru):</b>' + liList(lk.petunjuk_guru || lk.petunjuk) + '</div>' : '');
+      arr(lk.kegiatan || lk.aktivitas).forEach(function (k, i) {
+        h += '<div class="akt"><p class="lka-judul">' + (i + 1) + '. ' + esc(k.judul || '') + '</p>' + (k.perintah || k.pengantar ? '<p class="lka-perintah" dir="auto">' + inl(k.perintah || k.pengantar) + '</p>' : '') +
+          '<div class="lka-kotak">' + (k.gambar ? '<span>[' + inl(k.gambar) + ']</span>' : '') + '</div><p class="kecil">Capaian: BB / MB / BSH / BSB</p></div>';
+      });
+      h += '</div>';
+    }
+    return h;
+  }
+
   /* ---------------- tampilan / UI ---------------- */
-  var DOCS = [['cp', 'CP', docCP], ['tp', 'TP', docTP], ['atp', 'ATP', docATP], ['prota', 'Prota', docProta], ['prosem', 'Prosem', docProsem], ['kktp', 'KKTP', docKKTP]];
+  var DOCS = RA ? [['cp', 'CP', docCP], ['tp', 'TP', docTP], ['atp', 'ATP', docATPra], ['prota', 'Prota', docProtaRA], ['prosem', 'Prosem', docProsemRA], ['kktp', 'Kriteria', docKriteriaRA]] :
+    [['cp', 'CP', docCP], ['tp', 'TP', docTP], ['atp', 'ATP', docATP], ['prota', 'Prota', docProta], ['prosem', 'Prosem', docProsem], ['kktp', 'KKTP', docKKTP]];
   function singkat(t, n) { t = String(t || ''); return t.length > n ? t.slice(0, n - 1) + '…' : t; }
   function isModul(id) { return String(id).indexOf('modul') === 0; }
   function docsList() {
     var d = DOCS.slice(), M = P.modul_ajar;
     // satu tab per modul; modul terbaru (terakhir) di paling kanan
     M.forEach(function (m, i) {
-      d.push(['modul-' + (i + 1), M.length > 1 ? 'Modul ' + (i + 1) + ': ' + singkat(m.judul_topik || m.topik || '', 22) : 'Modul Ajar', function () { return docModul(m, 0); }]);
+      d.push(['modul-' + (i + 1), M.length > 1 ? 'Modul ' + (i + 1) + ': ' + singkat(m.judul_topik || m.topik || '', 22) : 'Modul Ajar', function () { return RA ? docModulRA(m, 0) : docModul(m, 0); }]);
     });
     if (P.tampilkan && P.tampilkan.length) d = d.filter(function (x) { return P.tampilkan.indexOf(x[0]) >= 0 || (isModul(x[0]) && P.tampilkan.indexOf('modul') >= 0); });
     if (!P.tp.length) d = d.filter(function (x) { return x[0] === 'cp' || isModul(x[0]); });
@@ -533,7 +727,7 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
 .prinsip{font-weight:400;font-style:italic;font-size:9pt}.sintaks{font-weight:700;font-size:9pt;color:#0B2B2A}.pb2{margin:6px 0 2px}\
 .lamp{text-align:center;font-size:12pt;margin:4px 0}.kotak{border:1px solid #000;padding:5px 8px;margin:6px 0}\
 .lk-id{width:100%;margin:6px 0;border-collapse:collapse}.lk-id td{padding:3px 2px;font-size:10pt}\
-.garis{border-bottom:1px dotted #555;height:18px}.tanya li{margin-bottom:6px}\
+.garis{border-bottom:1px dotted #555;height:18px}.lka-judul{font-size:14pt;font-weight:700;margin:8px 0 2px}.lka-perintah{font-size:13pt;margin:0 0 6px}.lka-kotak{border:2px dashed #888;border-radius:10px;height:300px;margin:4px 0;display:flex;align-items:center;justify-content:center;color:#888;font-style:italic;font-size:10pt;text-align:center;padding:8px;box-sizing:border-box}.foto-kotak{height:120px;width:33%;text-align:center;vertical-align:middle;color:#999;font-style:italic}.garis-isi{height:34px}.tanya li{margin-bottom:6px}\
 [dir=auto]{unicode-bidi:plaintext}\
 .ekspor .kop-kosong,.ekspor .lembar .isi:focus{display:none;box-shadow:none}\
 @media screen and (max-width:820px){#pa-wrap{padding-left:0;padding-right:0}}\
@@ -568,7 +762,7 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
   function lebih(isi) { return isi.scrollHeight > isi.clientHeight + 1; }
   function lembarBaru(box, docId, judulDok, pbManual) {
     var s = document.createElement('div'); s.className = 'lembar'; s.dataset.doc = docId; if (pbManual) s.dataset.pb = '1';
-    s.innerHTML = '<div class="isi" contenteditable="true" spellcheck="false"></div><div class="kaki" contenteditable="false"><span>' + esc(judulDok) + ' — ' + esc(I.mapel_nama || '') + ' Kelas ' + esc(I.kelas) + '</span><span class="nohal"></span></div>';
+    s.innerHTML = '<div class="isi" contenteditable="true" spellcheck="false"></div><div class="kaki" contenteditable="false"><span>' + esc(judulDok) + ' — ' + (RA ? 'Kelompok ' + esc(I.kelas) : esc(I.mapel_nama || '') + ' Kelas ' + esc(I.kelas)) + '</span><span class="nohal"></span></div>';
     box.appendChild(s); return s.firstChild;
   }
   function pecahTabel(t, isi) {
@@ -676,7 +870,7 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
     var lanjut = function () { render(); WAKTU = Date.now(); simpanLS(); if (panel) bukaPanel(panel); };
     if (!kena.length) return lanjut();
     konfirmasi('<b>Perhatian:</b> dokumen ' + kena.map(function (d) { return '<b>' + d[1] + '</b>'; }).join(', ') + ' sudah Anda edit. Perubahan pengaturan ini menyusun ulang dokumen tersebut, sehingga hasil edit di dalamnya hilang. Dokumen lain tetap.', lanjut,
-      function () { var sn = JSON.parse(snap); P.pengaturan = sn.pg; P.tp = sn.tp; el('kktp-in').value = P.pengaturan.kktp; el('jpm-in').value = jpMinggu(); if (panel && el('pa-panel').style.display === 'block') bukaPanel(panel); });
+      function () { var sn = JSON.parse(snap); P.pengaturan = sn.pg; P.tp = sn.tp; el('kktp-in').value = P.pengaturan.kktp; el('jpm-in').value = RA ? '' : jpMinggu(); if (RA) el('hari-in').value = hariSekolah(); if (panel && el('pa-panel').style.display === 'block') bukaPanel(panel); });
   }
   function simpanFile() {
     flush();
@@ -724,13 +918,13 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
       alirkan(d[0], d[1], bukaBungkus([].slice.call(tmp.childNodes)), box);
     });
     tampilkanAktif();
-    el('kktp-in').value = P.pengaturan.kktp; el('jpm-in').value = jpMinggu();
+    el('kktp-in').value = P.pengaturan.kktp; el('jpm-in').value = RA ? '' : jpMinggu(); if (RA) el('hari-in').value = hariSekolah();
     if (buang.length) simpanLS();
     var info = WARN_ID.map(function (w) { return '<span class="peringatan">' + w + '</span>'; });
     if (dipulihkan.length) info.push('<b>Hasil edit Anda dipulihkan</b> pada: ' + dipulihkan.join(', ') + '. Klik <b>Kembalikan Asli</b> untuk membatalkan suntingan pada tab yang dibuka.');
     if (buang.length) info.push('Hasil edit pada ' + buang.join(', ') + ' tidak dipakai lagi karena isi atau pengaturan dokumen tersebut berubah.');
-    var kodeLain = P.tp.filter(function (t) { var k = String(t.kode || '').toUpperCase().match(/^([A-F])[.\s]/); return k && k[1] !== I.fase; });
-    if (kodeLain.length) info.push('<span class="peringatan">' + kodeLain.length + ' dari ' + P.tp.length + ' kode TP berawalan fase lain (misalnya ' + esc(kodeLain[0].kode) + '), padahal dokumen ini Fase ' + I.fase + ' kelas ' + I.kelas + '. Kemungkinan data dari percakapan/kelas lain terbawa. Minta Gemini menyusun ulang TP dari CP Fase ' + I.fase + '.</span>');
+    var kodeLain = P.tp.filter(function (t) { if (RA) return !/^FD\./i.test(String(t.kode || '')); var k = String(t.kode || '').toUpperCase().match(/^([A-F])[.\s]/); return k && k[1] !== I.fase; });
+    if (kodeLain.length) info.push('<span class="peringatan">' + kodeLain.length + ' dari ' + P.tp.length + ' kode TP berawalan fase lain (misalnya ' + esc(kodeLain[0].kode) + '), padahal dokumen ini Fase ' + faseTxt() + ' ' + lblKelas().toLowerCase() + ' ' + I.kelas + '. Kemungkinan data dari percakapan/kelas lain terbawa. Minta Gemini menyusun ulang TP dari CP Fase ' + faseTxt() + (RA ? ' dengan kode FD.x.y' : '') + '.</span>');
     if (GAGAL.length) info.push('Sebagian data rujukan gagal dimuat (' + GAGAL.join(', ') + '). Periksa koneksi internet lalu muat ulang.');
     if (!cpMapel()) info.push('CP mapel "' + esc(I.mapel_id) + '" Fase ' + I.fase + ' tidak ditemukan.');
     var cpm = cpMapel(), elNama = cpm ? cpm.elemen.map(function (e) { return e.nama; }) : [];
@@ -742,7 +936,8 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
     var Kst = STR[I.kelas] && STR[I.kelas][I.mapel_id];
     if (P.pengaturan.jp_minggu && Kst && +P.pengaturan.jp_minggu !== Kst.jpm) info.push('JP per minggu diatur <b>' + esc(P.pengaturan.jp_minggu) + ' JP</b>, sedangkan struktur kurikulum KMA 1503 menetapkan <b>' + Kst.jpm + ' JP</b> untuk ' + esc(I.mapel_nama || '') + ' kelas ' + I.kelas + '. Pastikan sesuai jadwal madrasah.');
     if (P.modul_ajar.length && Object.keys(MODEL).length) P.modul_ajar.forEach(function (m, i) { if (m.model && !MODEL[m.model]) info.push('<span class="peringatan">Modul ' + (i + 1) + ' memakai model "' + esc(m.model_nama || m.model) + '" yang tidak ada di database 25 model praktik pedagogis.</span>'); });
-    if (JP_TEBAK && !P.pengaturan.jp_minggu) info.push('<span class="peringatan">JP per minggu mapel ini tidak ditemukan di struktur kurikulum; sementara dipakai 2 JP. Isi kolom JP/mg di atas sesuai jadwal madrasah.</span>');
+    if (RA && P.tp.length && !topikRA().length) info.push('<span class="peringatan">Data topik mingguan (<b>topik_ra</b>) untuk Kelompok ' + esc(I.kelas) + ' belum ada, sehingga Prota dan Prosem masih kosong. Minta Gemini menyusun topik mingguan.</span>');
+    if (!RA && JP_TEBAK && !P.pengaturan.jp_minggu) info.push('<span class="peringatan">JP per minggu mapel ini tidak ditemukan di struktur kurikulum; sementara dipakai 2 JP. Isi kolom JP/mg di atas sesuai jadwal madrasah.</span>');
     if (P.modul_ajar.length > 1) info.push('<b>Canvas ini berisi ' + P.modul_ajar.length + ' modul ajar.</b> Yang tampil pertama adalah modul terbaru (' + esc(P.modul_ajar[P.modul_ajar.length - 1].judul_topik || '') + '). Modul lain ada di tab "Modul 1", "Modul 2", dst.');
     P.modul_ajar.forEach(function (m, i) {
       var hilang = arr(m.tp_kode).filter(function (k) { return !P.tp.some(function (t) { return t.kode === k; }); });
@@ -756,7 +951,7 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
   function lembarTampil() { return [].slice.call(document.querySelectorAll('#pa-wrap .dok')).filter(function (d) { return d.style.display !== 'none'; }).reduce(function (a, d) { return a.concat([].slice.call(d.querySelectorAll('.lembar'))); }, []); }
   function namaFile(ext) {
     if (P.nama_dokumen && (aktif === 'semua' || (isModul(aktif) && P.modul_ajar.length === 1))) return String(P.nama_dokumen).replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' ').trim() + '.' + ext;
-    var t = aktif === 'semua' ? 'Perangkat Ajar' : isModul(aktif) ? 'Modul Ajar ' + ((P.modul_ajar[+aktif.split('-')[1] - 1] || {}).judul_topik || '') : (docsList().filter(function (d) { return d[0] === aktif; })[0] || [0, 'Dokumen'])[1]; return (t + ' - ' + (I.mapel_nama || '') + ' - Kelas ' + I.kelas + ' - ' + (I.guru.nama || '')).replace(/[\\/:*?"<>|]+/g, '') + '.' + ext; }
+    var t = aktif === 'semua' ? 'Perangkat Ajar' : isModul(aktif) ? 'Modul Ajar ' + ((P.modul_ajar[+aktif.split('-')[1] - 1] || {}).judul_topik || '') : (docsList().filter(function (d) { return d[0] === aktif; })[0] || [0, 'Dokumen'])[1]; return (t + ' - ' + (RA ? 'Kelompok ' + I.kelas : (I.mapel_nama || '') + ' - Kelas ' + I.kelas) + ' - ' + (I.guru.nama || '')).replace(/[\\/:*?"<>|]+/g, '') + '.' + ext; }
   function unduh(blob, name) { var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 2000); }
 
   /* ---------------- ekspor ---------------- */
@@ -770,7 +965,7 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
     body = body.replace(/<div class="kop-kosong[^>]*>.*?<\/div>/g, '').replace(/ contenteditable="(true|false)"/g, '');
     var imgs = [], i = 0;
     body = body.replace(/src="(data:image\/(png|jpe?g|gif|webp);base64,([^"]+))"/g, function (m0, all, type, b64) { var n = 'kop' + (i++) + '.' + (type === 'jpeg' ? 'jpg' : type); imgs.push({ n: n, type: 'image/' + type, b64: b64 }); return 'src="' + n + '"'; });
-    var css = '@page WordSection1{size:21cm 29.7cm;margin:1.2cm 1.5cm 1.5cm 1.5cm;mso-page-orientation:portrait}div.WordSection1{page:WordSection1}body{font-family:"Times New Roman";font-size:11pt}p{margin:0 0 4pt}table{border-collapse:collapse;width:100%}.grid td,.grid th{border:1px solid #000;padding:2pt 4pt;vertical-align:top}.grid th{background:#e8ece9}thead{display:table-header-group}.judul{text-align:center;font-size:13pt;text-transform:uppercase;margin:4pt 0 2pt}.subjudul{text-align:center;font-size:12pt;margin:0 0 8pt}.c{text-align:center}.kecil{font-size:9pt}.prosem td,.prosem th{font-size:7.5pt;padding:1pt}.libur{background:#d6d6d6}.isi-jp{background:#dce7df}.grup td,.total td{background:#f1f4f2}.ttd td{border:0;text-align:center;width:50%}.ttd-ruang{height:50pt}.kop img{width:100%}.identitas td{border:0;padding:1pt 3pt}.lk-id td{border:0}.kotak{border:1pt solid #000;padding:4pt}.garis{border-bottom:1pt dotted #555;height:14pt}.pt{font-weight:bold;background:#eef2ef}.sub{font-weight:bold}.head td{font-size:10pt;width:33%}.head td.lbl{width:17%;font-weight:bold;background:#f1f4f2}.desain td.lbl{width:28%;font-weight:bold;background:#f1f4f2}';
+    var css = '@page WordSection1{size:21cm 29.7cm;margin:1.2cm 1.5cm 1.5cm 1.5cm;mso-page-orientation:portrait}div.WordSection1{page:WordSection1}body{font-family:"Times New Roman";font-size:11pt}p{margin:0 0 4pt}table{border-collapse:collapse;width:100%}.grid td,.grid th{border:1px solid #000;padding:2pt 4pt;vertical-align:top}.grid th{background:#e8ece9}thead{display:table-header-group}.judul{text-align:center;font-size:13pt;text-transform:uppercase;margin:4pt 0 2pt}.subjudul{text-align:center;font-size:12pt;margin:0 0 8pt}.c{text-align:center}.kecil{font-size:9pt}.prosem td,.prosem th{font-size:7.5pt;padding:1pt}.libur{background:#d6d6d6}.isi-jp{background:#dce7df}.grup td,.total td{background:#f1f4f2}.ttd td{border:0;text-align:center;width:50%}.ttd-ruang{height:50pt}.kop img{width:100%}.identitas td{border:0;padding:1pt 3pt}.lk-id td{border:0}.kotak{border:1pt solid #000;padding:4pt}.garis{border-bottom:1pt dotted #555;height:14pt}.pt{font-weight:bold;background:#eef2ef}.sub{font-weight:bold}.lka-judul{font-size:14pt;font-weight:bold}.lka-perintah{font-size:13pt}.lka-kotak{border:2pt dashed #888;height:220pt;color:#888;text-align:center}.foto-kotak{height:90pt;color:#999;text-align:center}.head td{font-size:10pt;width:33%}.head td.lbl{width:17%;font-weight:bold;background:#f1f4f2}.desain td.lbl{width:28%;font-weight:bold;background:#f1f4f2}';
     var html = '<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><style>' + css + '</style></head><body><div class="WordSection1">' + body + '</div></body></html>';
     var B = '----=_NextPart_PERANGKAT', out = 'MIME-Version: 1.0\r\nContent-Type: multipart/related; boundary="' + B + '"\r\n\r\n--' + B + '\r\nContent-Type: text/html; charset="utf-8"\r\nContent-Location: file:///C:/dok.htm\r\nContent-Transfer-Encoding: base64\r\n\r\n' + b64utf8(html) + '\r\n';
     imgs.forEach(function (im) { out += '--' + B + '\r\nContent-Type: ' + im.type + '\r\nContent-Location: file:///C:/' + im.n + '\r\nContent-Transfer-Encoding: base64\r\n\r\n' + im.b64.replace(/(.{76})/g, '$1\r\n') + '\r\n'; });
@@ -834,12 +1029,12 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
     return h + '</div>';
   }
   function panelTP() {
-    var F = multiKelas(), h = '<b>Atur TP</b> — ubah ' + (F ? 'kelas, ' : '') + 'semester, JP setiap TP, dan ulangan harian setelah TP (isi JP-nya; 0 = tanpa ulangan). <button data-act="tutup">Tutup</button><table style="margin-top:6px"><tr><th>Kode</th><th>Tujuan Pembelajaran</th>' + (F ? '<th>Kelas</th>' : '') + '<th>Semester</th><th>JP</th><th title="JP ulangan harian yang dilaksanakan setelah TP ini selesai (0 = tidak ada)">Ulangan sesudahnya (JP)</th></tr>';
+    var F = multiKelas(), h = '<b>Atur TP</b> — ubah ' + (F ? lblKelas().toLowerCase() + ', ' : '') + (RA ? 'dan semester setiap TP. Topik mingguan diatur di data topik.' : 'semester, JP setiap TP, dan ulangan harian setelah TP (isi JP-nya; 0 = tanpa ulangan).') + ' <button data-act="tutup">Tutup</button><table style="margin-top:6px"><tr><th>Kode</th><th>Tujuan Pembelajaran</th>' + (F ? '<th>' + lblKelas() + '</th>' : '') + '<th>Semester</th>' + (RA ? '' : '<th>JP</th><th title="JP ulangan harian yang dilaksanakan setelah TP ini selesai (0 = tidak ada)">Ulangan sesudahnya (JP)</th>') + '</tr>';
     var cur = TPk();
     P.tp.forEach(function (t, i) {
       var inKelas = cur.indexOf(t) >= 0;
       h += '<tr><td>' + esc(t.kode) + '</td><td>' + esc(t.tp) + '</td>' + (F ? '<td><select data-tp="' + i + '" data-f="kelas">' + kelasFase().map(function (k) { return '<option' + (t.kelas === k ? ' selected' : '') + '>' + k + '</option>'; }).join('') + '</select></td>' : '') +
-        '<td>' + (inKelas ? '<select data-tp="' + i + '" data-f="semester"><option value="1"' + (String(t.semester) === '1' ? ' selected' : '') + '>I</option><option value="2"' + (String(t.semester) === '2' ? ' selected' : '') + '>II</option></select>' : '-') + '</td><td><input type="number" min="0" style="width:56px" data-tp="' + i + '" data-f="jp" value="' + esc(t.jp || 0) + '"></td><td><input type="number" min="0" style="width:56px" data-tp="' + i + '" data-f="ulangan_jp" value="' + ulJP(t) + '"></td></tr>';
+        '<td>' + (inKelas ? '<select data-tp="' + i + '" data-f="semester"><option value="1"' + (String(t.semester) === '1' ? ' selected' : '') + '>I</option><option value="2"' + (String(t.semester) === '2' ? ' selected' : '') + '>II</option></select>' : '-') + '</td>' + (RA ? '' : '<td><input type="number" min="0" style="width:56px" data-tp="' + i + '" data-f="jp" value="' + esc(t.jp || 0) + '"></td><td><input type="number" min="0" style="width:56px" data-tp="' + i + '" data-f="ulangan_jp" value="' + ulJP(t) + '"></td>') + '</tr>';
     });
     return h + '</table>';
   }
@@ -849,11 +1044,12 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
   function init() {
     var st = document.createElement('style'); st.textContent = CSS; document.head.appendChild(st);
     var mAkhir = P.modul_ajar[P.modul_ajar.length - 1];
-    document.title = P.nama_dokumen || (mAkhir && P.tampilkan && P.tampilkan.indexOf('modul') >= 0 ? 'Modul Ajar – ' + (I.mapel_nama || '') + ' ' + I.kelas + ' – ' + (mAkhir.judul_topik || '') : 'Perangkat Ajar – ' + (I.mapel_nama || '') + ' ' + I.kelas + ' – ' + String(I.tahun_pelajaran || '').replace('/', '-'));
+    document.title = P.nama_dokumen || (mAkhir && P.tampilkan && P.tampilkan.indexOf('modul') >= 0 ? 'Modul Ajar – ' + (I.mapel_nama || '') + ' ' + I.kelas + ' – ' + (mAkhir.judul_topik || '') : 'Perangkat Ajar – ' + (RA ? 'Kelompok' : (I.mapel_nama || '')) + ' ' + I.kelas + ' – ' + String(I.tahun_pelajaran || '').replace('/', '-'));
     var root = el('app') || document.body;
     root.innerHTML = '<div id="pa-bar"><span class="brand">Perangkat Ajar ' + esc(JENJANG_TXT[P.jenjang] || P.jenjang) + '</span><span id="pa-tabs"></span><span class="sep"></span>' +
       '<label class="btn">Unggah Kop<input type="file" id="kop-in" accept="image/*" hidden></label><button data-act="hapus-kop">Hapus Kop</button><span class="sep"></span>' +
-      '<span class="kecilui">KKTP</span><input type="number" id="kktp-in" min="1" max="100"><span class="kecilui">JP/mg</span><input type="number" id="jpm-in" min="1" max="12">' +
+      '<span' + (RA ? ' style="display:none"' : '') + '><span class="kecilui">KKTP</span><input type="number" id="kktp-in" min="1" max="100"><span class="kecilui">JP/mg</span><input type="number" id="jpm-in" min="1" max="12"></span>' +
+      (RA ? '<span class="kecilui">Hari/mg</span><input type="number" id="hari-in" min="5" max="6">' : '') +
       '<button data-act="minggu">Minggu Efektif</button><button data-act="atur-tp">Atur TP</button><span class="sep"></span>' +
       '<button data-act="cetak">Cetak</button><button data-act="pdf" id="btn-pdf">Unduh PDF</button><button data-act="word">Unduh Word</button><button data-act="html">Unduh HTML</button><button data-act="json" title="Simpan data (TP, pengaturan) untuk dipakai lagi">Data</button><span class="sep"></span>' +
       '<button data-act="simpan" title="Unduh file HTML yang memuat hasil edit; file ini tetap bisa diedit dan dicetak lagi">Simpan Hasil Edit</button><button data-act="asli" title="Hapus hasil edit pada tab yang sedang dibuka">Kembalikan Asli</button></div>' +
@@ -874,6 +1070,7 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
       var t = e.target;
       if (t.id === 'kop-in' && t.files[0]) { flush(); var fr = new FileReader(); fr.onload = function () { P.kop = fr.result; lsSet(kopKey, P.kop); render(); }; fr.readAsDataURL(t.files[0]); t.value = ''; }
       else if (t.id === 'kktp-in') { var kv = Math.max(1, Math.min(100, +t.value || 75)); ubahAman(function () { P.pengaturan.kktp = kv; }); }
+      else if (t.id === 'hari-in') { var hv = Math.max(5, Math.min(6, +t.value || 6)); ubahAman(function () { P.pengaturan.hari_sekolah = hv; }); }
       else if (t.id === 'jpm-in') { var jv = Math.max(1, +t.value || 1); ubahAman(function () { P.pengaturan.jp_minggu = jv; }); }
       else if (t.dataset.minggu) { var mk = t.dataset.minggu, mc = t.checked; ubahAman(function () { P.pengaturan.minggu = P.pengaturan.minggu || {}; P.pengaturan.minggu[mk] = mc; }, panelMinggu); }
       else if (t.dataset.tp) { var ti = +t.dataset.tp, f = t.dataset.f, v = (f === 'jp' || f === 'ulangan_jp') ? Math.max(0, +t.value || 0) : t.value; ubahAman(function () { var tp = P.tp[ti]; tp[f] = v; if (f === 'kelas') delete tp.semester; }, panelTP); }
