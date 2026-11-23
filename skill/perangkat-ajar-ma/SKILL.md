@@ -78,6 +78,7 @@ Buat **satu Canvas** bernama `Perangkat Ajar – {Mapel} {Kelas} – {TP}`. Tuli
 - Isi `semester` (1/2). Untuk Fase F isi `kelas` (XI/XII); bila ragu, kosongkan dan engine akan membaginya.
 - Isi `kktp` dengan 4 deskriptor unjuk kerja konkret per TP (interval rendah → tinggi).
 - Isi `kbc` (1–3 kode Panca Cinta) dan `dpl` (2–4 kode DPL).
+- Bila guru menyebut jadwal ulangan harian (misalnya "ulangan setelah TP kedua, 2 JP"), isi `ulangan_jp` pada TP tersebut. Engine menempatkannya di Prota dan Prosem serta menghitung ulang jumlah JP. Guru juga bisa mengaturnya sendiri lewat **Atur TP**.
 
 Tampilkan ringkasan singkat (jumlah TP dan JP per semester) di chat, lalu buat Canvas.
 
@@ -118,7 +119,7 @@ Gunakan label persis: **1** Cinta Allah dan Rasul-Nya, **2** Cinta Ilmu, **3** C
 <script>
 window.PERANGKAT = { /* DATA JSON DI SINI */ };
 </script>
-<script src="https://cdn.jsdelivr.net/gh/muflihan-ak/perangkat-ajar-madrasah@v1.3.1/mesin/mesin-perangkat.js"
+<script src="https://cdn.jsdelivr.net/gh/muflihan-ak/perangkat-ajar-madrasah@v1.4.0/mesin/mesin-perangkat.js"
   onerror="var s=document.createElement('script');s.src='https://muflihan-ak.github.io/perangkat-ajar-madrasah/mesin/mesin-perangkat.js';document.head.appendChild(s);"></script>
 </head>
 <body><div id="app">Memuat mesin perangkat ajar…</div></body>
@@ -148,6 +149,7 @@ window.PERANGKAT = { /* DATA JSON DI SINI */ };
       tp: "Mengintegrasikan …", materi: "…", jp: 9,
       semester: 1, kelas: "XI",                      // kelas hanya untuk Fase F
       kbc: [2,4], dpl: [3,5],
+      ulangan_jp: 2,                                 // opsional: JP ulangan harian setelah TP ini (hanya bila guru meminta)
       kktp: ["deskriptor interval 1","…2","…3","…4"] }
   ],
   modul_ajar: [                                       // hanya di Canvas Modul Ajar; TEPAT SATU objek
@@ -186,4 +188,4 @@ window.PERANGKAT = { /* DATA JSON DI SINI */ };
 6. `pengaturan.jp_minggu` hanya diisi bila guru menyebutkan JP yang berbeda dari KMA 1503.
 7. Jangan mengarang nomor regulasi, tanggal libur, atau data madrasah. Kalender sudah ditanam di engine.
 8. Bahasa Indonesia baku. Istilah dan teks Arab ditulis dengan huruf Arab yang benar.
-9. Setelah Canvas tampil, beri tahu guru dalam 2–3 kalimat: tab dokumen yang tersedia, tombol **Unggah Kop**, **Atur TP** / **Minggu Efektif** / **KKTP**, serta **Cetak** / **Unduh PDF** / **Unduh Word**. Bila ada peringatan merah di bagian atas dokumen, minta guru menyampaikannya agar data diperbaiki. Ingatkan bahwa perangkat buatan AI wajib ditelaah guru sebelum disahkan Kepala Madrasah.
+9. Setelah Canvas tampil, beri tahu guru dalam 2–3 kalimat: tab dokumen yang tersedia, tombol **Unggah Kop**, **Atur TP** (termasuk ulangan harian) / **Minggu Efektif** / **KKTP**, serta **Cetak** / **Unduh PDF** / **Unduh Word**. Teks dapat diedit langsung; hasil edit tersimpan di browser, dan **Simpan Hasil Edit** mengunduh file HTML berisi hasil edit agar bisa dibuka atau dicetak lagi di perangkat lain. Bila ada peringatan merah di bagian atas dokumen, minta guru menyampaikannya agar data diperbaiki. Ingatkan bahwa perangkat buatan AI wajib ditelaah guru sebelum disahkan Kepala Madrasah.
