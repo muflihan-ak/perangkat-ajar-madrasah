@@ -1,12 +1,12 @@
 /*!
- * Mesin Perangkat Ajar Madrasah v1.4.0
+ * Mesin Perangkat Ajar Madrasah v1.5.0
  * CP · TP · ATP · Prota · Prosem · KKTP · Modul Ajar (Pembelajaran Mendalam Berbasis Cinta)
  * Data: window.PERANGKAT (ditulis skill Gemini). Rujukan CP/JP/Kaldik: berkas .md di folder data/.
  * Repo: github.com/muflihan-ak/perangkat-ajar-madrasah
  */
 (function () {
   'use strict';
-  var VERSI = '1.4.0';
+  var VERSI = '1.5.0';
   var SRC_MESIN = (document.currentScript && document.currentScript.src) || '';
   var REPO = 'muflihan-ak/perangkat-ajar-madrasah';
   var DATA_BASES = [
@@ -40,7 +40,11 @@
   function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function lsSet(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) { } }
   var ROMAWI = { '1': 'I', '2': 'II' };
-  var KELAS_TXT = { 'X': 'X (Sepuluh)', 'XI': 'XI (Sebelas)', 'XII': 'XII (Dua Belas)' };
+  var KELAS_TXT = { 'I': 'I (Satu)', 'II': 'II (Dua)', 'III': 'III (Tiga)', 'IV': 'IV (Empat)', 'V': 'V (Lima)', 'VI': 'VI (Enam)', 'VII': 'VII (Tujuh)', 'VIII': 'VIII (Delapan)', 'IX': 'IX (Sembilan)', 'X': 'X (Sepuluh)', 'XI': 'XI (Sebelas)', 'XII': 'XII (Dua Belas)' };
+  var KELAS_FASE = { A: ['I', 'II'], B: ['III', 'IV'], C: ['V', 'VI'], D: ['VII', 'VIII', 'IX'], E: ['X'], F: ['XI', 'XII'] };
+  var KELAS_AKHIR = { 'VI': 1, 'IX': 1, 'XII': 1 };
+  var JENJANG_TXT = { MA: 'MA', MTS: 'MTs', MI: 'MI', RA: 'RA' };
+  var FASE_JENJANG = { MA: ['E', 'F'], MTS: ['D'], MI: ['A', 'B', 'C'] };
   var BULAN_ORDER = ['Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni'];
   var KBC = { 1: 'Cinta Allah dan Rasul-Nya', 2: 'Cinta Ilmu', 3: 'Cinta Lingkungan', 4: 'Cinta Diri dan Sesama Manusia', 5: 'Cinta Tanah Air' };
   var DPL = { 1: 'Keimanan & Ketakwaan terhadap Tuhan YME', 2: 'Kewargaan', 3: 'Penalaran Kritis', 4: 'Kreativitas', 5: 'Kolaborasi', 6: 'Kemandirian', 7: 'Kesehatan', 8: 'Komunikasi' };
@@ -62,10 +66,13 @@
   }
   var WARN_ID = [], kelasAsli = I.kelas != null ? I.kelas : (P.kelas != null ? P.kelas : I.kelas_fase);
   I.kelas = normKelas(kelasAsli);
-  if (!I.kelas) { WARN_ID.push('Kelas tidak terbaca' + (kelasAsli ? ' ("' + kelasAsli + '")' : ' (kosong)') + '. Dokumen sementara memakai kelas X. Minta Gemini mengisi <b>identitas.kelas</b> dengan X, XI, atau XII.'); I.kelas = 'X'; }
+  if (!I.kelas) { var kDef = P.jenjang === 'MTS' ? ['VII', 'VII, VIII, atau IX'] : P.jenjang === 'MI' ? ['I', 'I sampai VI'] : ['X', 'X, XI, atau XII']; WARN_ID.push('Kelas tidak terbaca' + (kelasAsli ? ' ("' + kelasAsli + '")' : ' (kosong)') + '. Dokumen sementara memakai kelas ' + kDef[0] + '. Minta Gemini mengisi <b>identitas.kelas</b> dengan ' + kDef[1] + '.'); I.kelas = kDef[0]; }
   var faseHitung = FASE_KELAS[I.kelas] || 'E', faseAsli = String(I.fase || '').toUpperCase().replace(/FASE|\s/g, '');
   if (faseAsli && faseAsli !== faseHitung) WARN_ID.push('Fase tertulis <b>' + faseAsli + '</b>, padahal kelas ' + I.kelas + ' adalah <b>Fase ' + faseHitung + '</b>. Dokumen memakai Fase ' + faseHitung + '.');
   I.fase = faseHitung;
+  if (FASE_JENJANG[P.jenjang] && FASE_JENJANG[P.jenjang].indexOf(I.fase) < 0) WARN_ID.push('Kelas ' + I.kelas + ' (Fase ' + I.fase + ') bukan kelas jenjang ' + (JENJANG_TXT[P.jenjang] || P.jenjang) + '. Periksa <b>jenjang</b> dan <b>identitas.kelas</b>.');
+  function kelasFase() { return KELAS_FASE[I.fase] || [I.kelas]; }
+  function multiKelas() { return kelasFase().length > 1; }
   arr(P.tp).forEach(function (t) { if (t && t.kelas != null) t.kelas = normKelas(t.kelas) || t.kelas; });
   I.program = (I.program || 'reguler').toLowerCase();
   I.kepala = I.kepala || {}; I.guru = I.guru || {};
@@ -146,7 +153,8 @@
   }
   function loadAll() {
     var j = P.jenjang.toLowerCase();
-    var cpFiles = j === 'ma' ? ['ma/cp-ma-umum-fase-' + I.fase.toLowerCase() + '.md', 'ma/cp-ma-pai-arab.md', 'ma/cp-ma-keagamaan.md'] : [];
+    var cpFiles = j === 'ma' ? ['ma/cp-ma-umum-fase-' + I.fase.toLowerCase() + '.md', 'ma/cp-ma-pai-arab.md', 'ma/cp-ma-keagamaan.md'] :
+      j === 'mts' ? ['mts/cp-mts-umum-fase-' + I.fase.toLowerCase() + '.md', 'mts/cp-mts-pai-arab.md'] : [];
     var jobs = cpFiles.map(function (f) { return fetchText(f).then(function (t) { parseCP(t, CP); }).catch(function () { GAGAL.push(f); }); });
     jobs.push(fetchText(j + '/struktur-kurikulum-' + j + '.md').then(function (t) { STR = parseStruktur(t); }).catch(function () { GAGAL.push('struktur'); }));
     if (P.modul_ajar.length) jobs.push(fetchText('model-pedagogis.md').then(parseModel).catch(function () { GAGAL.push('model-pedagogis'); }));
@@ -172,7 +180,7 @@
   var JP_TEBAK = false;
   function weeksFor(sem) {
     var ov = P.pengaturan.minggu || {};
-    var akhir = I.kelas === 'XII' && sem === '2' && KAL.batas;
+    var akhir = KELAS_AKHIR[I.kelas] && sem === '2' && KAL.batas;
     return KAL.weeks.filter(function (w) { return w.sem === sem; }).map(function (w) {
       var ef = w.ef, ket = w.ket;
       if (akhir && w.senin > KAL.batas) { ef = false; ket = ket || 'Kelas akhir: persiapan/pelaksanaan UM'; }
@@ -183,9 +191,10 @@
   function efektif(sem) { return weeksFor(sem).filter(function (w) { return w.ef; }).length; }
   function tpKelas() {
     var list = P.tp;
-    if (I.fase === 'F') {
-      var tot = list.reduce(function (a, t) { return a + (+t.jp || 0); }, 0), acc = 0;
-      list.forEach(function (t) { if (!t.kelas) { t.kelas = acc < tot / 2 ? 'XI' : 'XII'; } acc += (+t.jp || 0); t._auto = true; });
+    if (multiKelas()) {
+      // TP satu fase dibagi berurutan ke kelas-kelas fase menurut JP (Fase F: XI/XII, Fase D: VII/VIII/IX)
+      var K = kelasFase(), n = K.length, tot = list.reduce(function (a, t) { return a + (+t.jp || 0); }, 0), acc = 0;
+      list.forEach(function (t) { if (!t.kelas) { t.kelas = tot > 0 ? K[Math.min(n - 1, Math.floor(acc * n / tot))] : K[n - 1]; } acc += (+t.jp || 0); t._auto = true; });
       return list.filter(function (t) { return String(t.kelas).toUpperCase() === I.kelas; });
     }
     return list;
@@ -245,7 +254,8 @@
   }
   /* ---- 2. TP ---- */
   function docTP() {
-    var cp = cpMapel(), F = I.fase === 'F', nc = F ? 5 : 4;
+    TPk();                                                // pastikan pembagian kelas & semester sudah terisi
+    var cp = cpMapel(), F = multiKelas(), nc = F ? 5 : 4;
     var h = kop() + judul('Tujuan Pembelajaran', (I.mapel_nama || '') + ' — Fase ' + I.fase) + idTable({ tahunan: true });
     var groups = {}, order = [];
     P.tp.forEach(function (t) { var k = t.elemen || '-'; if (!groups[k]) { groups[k] = []; order.push(k); } groups[k].push(t); });
@@ -262,7 +272,7 @@
       });
     });
     h += '</tbody></table>';
-    if (F) h += '<p class="kecil">Kolom semester diisi untuk TP kelas ' + esc(I.kelas) + '. TP kelas lain pada Fase F ditampilkan sebagai keterangan alur fase.</p>';
+    if (F) h += '<p class="kecil">Kolom semester diisi untuk TP kelas ' + esc(I.kelas) + '. TP kelas lain pada Fase ' + esc(I.fase) + ' ditampilkan sebagai keterangan alur fase.</p>';
     return h + ttd();
   }
   /* ---- 3. ATP ---- */
@@ -823,11 +833,11 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
     return h + '</div>';
   }
   function panelTP() {
-    var F = I.fase === 'F', h = '<b>Atur TP</b> — ubah ' + (F ? 'kelas, ' : '') + 'semester, JP setiap TP, dan ulangan harian setelah TP (isi JP-nya; 0 = tanpa ulangan). <button data-act="tutup">Tutup</button><table style="margin-top:6px"><tr><th>Kode</th><th>Tujuan Pembelajaran</th>' + (F ? '<th>Kelas</th>' : '') + '<th>Semester</th><th>JP</th><th title="JP ulangan harian yang dilaksanakan setelah TP ini selesai (0 = tidak ada)">Ulangan sesudahnya (JP)</th></tr>';
+    var F = multiKelas(), h = '<b>Atur TP</b> — ubah ' + (F ? 'kelas, ' : '') + 'semester, JP setiap TP, dan ulangan harian setelah TP (isi JP-nya; 0 = tanpa ulangan). <button data-act="tutup">Tutup</button><table style="margin-top:6px"><tr><th>Kode</th><th>Tujuan Pembelajaran</th>' + (F ? '<th>Kelas</th>' : '') + '<th>Semester</th><th>JP</th><th title="JP ulangan harian yang dilaksanakan setelah TP ini selesai (0 = tidak ada)">Ulangan sesudahnya (JP)</th></tr>';
     var cur = TPk();
     P.tp.forEach(function (t, i) {
       var inKelas = cur.indexOf(t) >= 0;
-      h += '<tr><td>' + esc(t.kode) + '</td><td>' + esc(t.tp) + '</td>' + (F ? '<td><select data-tp="' + i + '" data-f="kelas"><option' + (t.kelas === 'XI' ? ' selected' : '') + '>XI</option><option' + (t.kelas === 'XII' ? ' selected' : '') + '>XII</option></select></td>' : '') +
+      h += '<tr><td>' + esc(t.kode) + '</td><td>' + esc(t.tp) + '</td>' + (F ? '<td><select data-tp="' + i + '" data-f="kelas">' + kelasFase().map(function (k) { return '<option' + (t.kelas === k ? ' selected' : '') + '>' + k + '</option>'; }).join('') + '</select></td>' : '') +
         '<td>' + (inKelas ? '<select data-tp="' + i + '" data-f="semester"><option value="1"' + (String(t.semester) === '1' ? ' selected' : '') + '>I</option><option value="2"' + (String(t.semester) === '2' ? ' selected' : '') + '>II</option></select>' : '-') + '</td><td><input type="number" min="0" style="width:56px" data-tp="' + i + '" data-f="jp" value="' + esc(t.jp || 0) + '"></td><td><input type="number" min="0" style="width:56px" data-tp="' + i + '" data-f="ulangan_jp" value="' + ulJP(t) + '"></td></tr>';
     });
     return h + '</table>';
@@ -840,7 +850,7 @@ table.ttd{width:100%;margin-top:16px;border:0;border-collapse:collapse}.ttd td{w
     var mAkhir = P.modul_ajar[P.modul_ajar.length - 1];
     document.title = P.nama_dokumen || (mAkhir && P.tampilkan && P.tampilkan.indexOf('modul') >= 0 ? 'Modul Ajar – ' + (I.mapel_nama || '') + ' ' + I.kelas + ' – ' + (mAkhir.judul_topik || '') : 'Perangkat Ajar – ' + (I.mapel_nama || '') + ' ' + I.kelas + ' – ' + String(I.tahun_pelajaran || '').replace('/', '-'));
     var root = el('app') || document.body;
-    root.innerHTML = '<div id="pa-bar"><span class="brand">Perangkat Ajar ' + esc(P.jenjang) + '</span><span id="pa-tabs"></span><span class="sep"></span>' +
+    root.innerHTML = '<div id="pa-bar"><span class="brand">Perangkat Ajar ' + esc(JENJANG_TXT[P.jenjang] || P.jenjang) + '</span><span id="pa-tabs"></span><span class="sep"></span>' +
       '<label class="btn">Unggah Kop<input type="file" id="kop-in" accept="image/*" hidden></label><button data-act="hapus-kop">Hapus Kop</button><span class="sep"></span>' +
       '<span class="kecilui">KKTP</span><input type="number" id="kktp-in" min="1" max="100"><span class="kecilui">JP/mg</span><input type="number" id="jpm-in" min="1" max="12">' +
       '<button data-act="minggu">Minggu Efektif</button><button data-act="atur-tp">Atur TP</button><span class="sep"></span>' +
